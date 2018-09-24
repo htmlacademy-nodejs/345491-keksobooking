@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Михаил Седых](https://up.htmlacademy.ru/nodejs/2/user/345491).
-* Наставник: `Неизвестно`.
+* Наставник: [Николай Яшин](https://htmlacademy.ru/profile/id213763).
 
 ---
 
