@@ -3,6 +3,7 @@ const VERSION_TASK = `--version`;
 const WELCOME_MESSAGE = `Привет пользователь!
 Эта программа будет запускать сервер «Кексобукинг».
 Автор: Кекс.`;
+
 const command = process.argv[2];
 
 function setTask(task = WELCOME_MESSAGE) {
@@ -12,8 +13,8 @@ function setTask(task = WELCOME_MESSAGE) {
 
     case HELP_TASK:
       message = `Доступные команды:
-      --help    — печатает этот текст;
-      --version — печатает версию приложения;`;
+      ${HELP_TASK}    — печатает этот текст;
+      ${VERSION_TASK} — печатает версию приложения;`;
       break;
     case VERSION_TASK:
       message = `v0.0.1`;
@@ -26,13 +27,10 @@ function setTask(task = WELCOME_MESSAGE) {
       Чтобы прочитать правила использования приложения, наберите "--help"`;
       console.error(message);
       process.exit(1);
+      return;
   }
 
   console.log(message);
-  process.exit();
 }
 
 setTask(command);
-
-
-
