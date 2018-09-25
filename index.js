@@ -27,7 +27,6 @@ function setTask(task = WELCOME_MESSAGE) {
       Чтобы прочитать правила использования приложения, наберите ${HELP_TASK}`;
       console.error(message);
       process.exit(1);
-      return;
   }
 
   console.log(message);
