@@ -24,7 +24,7 @@ function setTask(task = WELCOME_MESSAGE) {
       break;
     default:
       message = `Неизвестная команда ${command}.
-      Чтобы прочитать правила использования приложения, наберите "--help"`;
+      Чтобы прочитать правила использования приложения, наберите ${HELP_TASK}`;
       console.error(message);
       process.exit(1);
       return;
