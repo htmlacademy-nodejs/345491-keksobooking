@@ -1,3 +1,5 @@
+'use strict';
+
 const HELP_TASK = `--help`;
 const VERSION_TASK = `--version`;
 const WELCOME_MESSAGE = `Привет пользователь!

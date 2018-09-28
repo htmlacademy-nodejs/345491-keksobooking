@@ -1,0 +1,24 @@
+{
+  "name": "345491-keksobooking-node",
+  "version": "0.0.1",
+  "description": "educational backend-project",
+  "main": "index.js",
+  "scripts": {
+    "test:lint": "eslint .",
+    "test": "npm run test:lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/methanol/345491-keksobooking-1.git"
+  },
+  "author": "Mikhail S",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/methanol/345491-keksobooking-1/issues"
+  },
+  "homepage": "https://github.com/methanol/345491-keksobooking-1#readme",
+  "devDependencies": {
+    "eslint": "5.6.0",
+    "eslint-config-htmlacademy": "0.5.2"
+  }
+}
