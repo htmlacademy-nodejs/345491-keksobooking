@@ -1,3 +1,5 @@
+'use strict';
+
 class ParentTask {
   constructor(name, info, message) {
     this.name = name;

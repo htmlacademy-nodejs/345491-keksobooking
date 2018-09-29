@@ -1,15 +1,17 @@
-const {HELP_TASK: currentTask, ...OTHER_TASKS} = require(`../utils/task-constants`);
+'use strict';
+
+const TASK_LIST = require(`../utils/task-constants`);
 const ParentTask = require(`../utils/task-constructor`);
 
 const DESCRIPTION = `useful commands`;
 const MESSAGE = `Доступные команды:
-      ${currentTask}    — печатает этот текст;
-      ${OTHER_TASKS.VERSION_TASK} — текущая версия;
-      ${OTHER_TASKS.AUTHOR_TASK} — сведения об авторе;
-      ${OTHER_TASKS.LICENSE_TASK} — сведения о лицензии;
-      ${OTHER_TASKS.DESCRIPTION_TASK} — описание приложения;`;
+      ${TASK_LIST.HELP_TASK}    — печатает этот текст;
+      ${TASK_LIST.VERSION_TASK} — текущая версия;
+      ${TASK_LIST.AUTHOR_TASK} — сведения об авторе;
+      ${TASK_LIST.LICENSE_TASK} — сведения о лицензии;
+      ${TASK_LIST.DESCRIPTION_TASK} — описание приложения;`;
 
-const helpTask = new ParentTask(currentTask, DESCRIPTION, MESSAGE);
+const helpTask = new ParentTask(TASK_LIST.HELP_TASK, DESCRIPTION, MESSAGE);
 
 module.exports = helpTask;
 

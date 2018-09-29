@@ -1,3 +1,5 @@
+'use strict';
+
 const packageInfo = require(`../package.json`);
 const {VERSION_TASK: currentTask} = require(`../utils/task-constants`);
 const ParentTask = require(`../utils/task-constructor`);

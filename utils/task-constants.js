@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   HELP_TASK: `--help`,
   VERSION_TASK: `--version`,

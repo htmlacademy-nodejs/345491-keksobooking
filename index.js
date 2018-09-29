@@ -9,7 +9,7 @@ const descriptionTask = require(`./src/description.js`);
 
 const command = process.argv[2];
 
-function setTask(task = WELCOME_MESSAGE) {
+function setTask(task = TASK_LIST.WELCOME_MESSAGE) {
 
   switch (task) {
 
