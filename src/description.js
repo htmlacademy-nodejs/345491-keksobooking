@@ -1,10 +1,11 @@
 const packageInfo = require(`../package.json`);
 const {DESCRIPTION_TASK: currentTask} = require(`../utils/task-constants`);
+const ParentTask = require(`../utils/task-constructor`);
 
-module.exports = {
-  name: currentTask,
-  description: `some information`,
-  execute() {
-    console.log(packageInfo.description);
-  }
-};
+const DESCRIPTION = `some information`;
+const MESSAGE = packageInfo.description;
+
+const descriptionTask = new ParentTask(currentTask, DESCRIPTION, MESSAGE);
+
+module.exports = descriptionTask;
+

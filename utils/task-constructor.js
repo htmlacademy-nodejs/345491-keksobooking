@@ -1,10 +1,13 @@
 class ParentTask {
-  constructor(name, info) {
+  constructor(name, info, message) {
     this.name = name;
     this.description = info;
+    this.message = message;
   }
 
-  execute(message) {
-    console.log(message);
+  execute() {
+    console.log(this.message);
   }
 }
+
+module.exports = ParentTask;
