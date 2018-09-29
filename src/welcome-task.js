@@ -1,6 +1,8 @@
 'use strict';
 
-const WELCOME_MESSAGE = require(`../utils/task-constants`).WELCOME_MESSAGE;
+const colors = require(`colors/safe`);
+
+const WELCOME_MESSAGE = colors.rainbow(require(`../utils/task-constants`).WELCOME_MESSAGE);
 const currentTask = ``;
 const BaseTask = require(`../utils/task-constructor`);
 
