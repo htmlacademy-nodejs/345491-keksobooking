@@ -1,7 +1,7 @@
 'use strict';
 
-const TASK_LIST = require(`../utils/task-constants`);
-const TaskConstructor = require(`../utils/task-constructor`);
+const TASK_LIST = require(`../utils/task-constants`).Tasks;
+const BaseTask = require(`../utils/task-constructor`);
 const versionTask = require(`./version.js`);
 const authorTask = require(`./author.js`);
 const licenseTask = require(`./license.js`);
@@ -17,7 +17,13 @@ const showMessage = (version, author, license, description) => {
       ${TASK_LIST.DESCRIPTION_TASK} — ${description};`;
 };
 
-const helpTask = new TaskConstructor(TASK_LIST.HELP_TASK, DESCRIPTION, showMessage(versionTask.description, authorTask.description, licenseTask.description, descriptionTask.description));
+class HelpTask extends BaseTask {
+  constructor() {
+    super(TASK_LIST.HELP_TASK, DESCRIPTION, showMessage(versionTask.description, authorTask.description, licenseTask.description, descriptionTask.description));
+  }
+}
+
+const helpTask = new HelpTask();
 
 module.exports = helpTask;
 

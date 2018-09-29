@@ -1,6 +1,6 @@
 'use strict';
 
-class TaskConstructor {
+class BaseTask {
   constructor(name, info, message) {
     this.name = name;
     this.description = info;
@@ -12,4 +12,4 @@ class TaskConstructor {
   }
 }
 
-module.exports = TaskConstructor;
+module.exports = BaseTask;

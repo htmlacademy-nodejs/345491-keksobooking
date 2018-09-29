@@ -1,6 +1,6 @@
 'use strict';
 
-const TASK_LIST = require(`./utils/task-constants`);
+const welcomeTask = require(`./src/welcome-screen.js`);
 const versionTask = require(`./src/version.js`);
 const helpTask = require(`./src/help.js`);
 const authorTask = require(`./src/author.js`);
@@ -9,27 +9,28 @@ const descriptionTask = require(`./src/description.js`);
 
 const command = process.argv[2];
 
-function setTask(task = TASK_LIST.WELCOME_MESSAGE) {
+function setTask(task = welcomeTask.name) {
+  let currentTask = {};
 
   switch (task) {
 
     case helpTask.name:
-      helpTask.execute();
+      currentTask = helpTask;
       break;
     case versionTask.name:
-      versionTask.execute();
+      currentTask = versionTask;
       break;
     case authorTask.name:
-      authorTask.execute();
+      currentTask = authorTask;
       break;
     case licenseTask.name:
-      licenseTask.execute();
+      currentTask = licenseTask;
       break;
     case descriptionTask.name:
-      descriptionTask.execute();
+      currentTask = descriptionTask;
       break;
-    case TASK_LIST.WELCOME_MESSAGE:
-      console.log(TASK_LIST.WELCOME_MESSAGE);
+    case welcomeTask.name:
+      currentTask = welcomeTask;
       break;
     default:
       console.error(`Неизвестная команда ${command}.
@@ -41,6 +42,8 @@ function setTask(task = TASK_LIST.WELCOME_MESSAGE) {
         ${descriptionTask.name} — ${descriptionTask.description};`);
       process.exit(1);
   }
+
+  currentTask.execute();
 }
 
 setTask(command);
