@@ -10,7 +10,7 @@ const DESCRIPTION = `program version`;
 const MESSAGE = packageInfo.version;
 
 function setColor(text) {
-  let colorLetter = text.split(`.`);
+  const colorLetter = text.split(`.`);
   colorLetter[0] = colors.red(colorLetter[0]);
   colorLetter[1] = colors.green(colorLetter[1]);
   colorLetter[2] = colors.blue(colorLetter[2]);
