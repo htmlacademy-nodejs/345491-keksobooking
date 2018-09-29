@@ -2,10 +2,10 @@
 
 const TASK_LIST = require(`../utils/task-constants`).Tasks;
 const BaseTask = require(`../utils/task-constructor`);
-const versionTask = require(`./version.js`);
-const authorTask = require(`./author.js`);
-const licenseTask = require(`./license.js`);
-const descriptionTask = require(`./description.js`);
+const versionTask = require(`./version-task.js`);
+const authorTask = require(`./author-task`);
+const licenseTask = require(`./license-task`);
+const descriptionTask = require(`./description-task`);
 
 const DESCRIPTION = `useful commands`;
 const showMessage = (version, author, license, description) => {

@@ -1,11 +1,11 @@
 'use strict';
 
-const welcomeTask = require(`./src/welcome-screen.js`);
-const versionTask = require(`./src/version.js`);
-const helpTask = require(`./src/help.js`);
-const authorTask = require(`./src/author.js`);
-const licenseTask = require(`./src/license.js`);
-const descriptionTask = require(`./src/description.js`);
+const welcomeTask = require(`./src/welcome-task`);
+const versionTask = require(`./src/version-task.js`);
+const helpTask = require(`./src/help-task`);
+const authorTask = require(`./src/author-task`);
+const licenseTask = require(`./src/license-task`);
+const descriptionTask = require(`./src/description-task`);
 
 const command = process.argv[2];
 
