@@ -1,37 +1,46 @@
 'use strict';
 
-const HELP_TASK = `--help`;
-const VERSION_TASK = `--version`;
-const WELCOME_MESSAGE = `Привет пользователь!
-Эта программа будет запускать сервер «Кексобукинг».
-Автор: Кекс.`;
+const TASK_LIST = require(`./utils/task-constants`);
+const versionTask = require(`./src/version.js`);
+const helpTask = require(`./src/help.js`);
+const authorTask = require(`./src/author.js`);
+const licenseTask = require(`./src/license.js`);
+const descriptionTask = require(`./src/description.js`);
 
 const command = process.argv[2];
 
 function setTask(task = WELCOME_MESSAGE) {
-  let message = ``;
 
   switch (task) {
 
-    case HELP_TASK:
-      message = `Доступные команды:
-      ${HELP_TASK}    — печатает этот текст;
-      ${VERSION_TASK} — печатает версию приложения;`;
+    case helpTask.name:
+      helpTask.execute();
       break;
-    case VERSION_TASK:
-      message = `v0.0.1`;
+    case versionTask.name:
+      versionTask.execute();
       break;
-    case WELCOME_MESSAGE:
-      message = WELCOME_MESSAGE;
+    case authorTask.name:
+      authorTask.execute();
+      break;
+    case licenseTask.name:
+      licenseTask.execute();
+      break;
+    case descriptionTask.name:
+      descriptionTask.execute();
+      break;
+    case TASK_LIST.WELCOME_MESSAGE:
+      console.log(TASK_LIST.WELCOME_MESSAGE);
       break;
     default:
-      message = `Неизвестная команда ${command}.
-      Чтобы прочитать правила использования приложения, наберите ${HELP_TASK}`;
-      console.error(message);
+      console.error(`Неизвестная команда ${command}.
+      Доступные команды:
+        ${helpTask.name}    — вызов справки;
+        ${versionTask.name} — текущая версия;
+        ${authorTask.name} — сведения об авторе;
+        ${licenseTask.name} — сведения о лицензии;
+        ${descriptionTask.name} — описание приложения;`);
       process.exit(1);
   }
-
-  console.log(message);
 }
 
 setTask(command);
