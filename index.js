@@ -1,37 +1,49 @@
 'use strict';
 
-const HELP_TASK = `--help`;
-const VERSION_TASK = `--version`;
-const WELCOME_MESSAGE = `Привет пользователь!
-Эта программа будет запускать сервер «Кексобукинг».
-Автор: Кекс.`;
+const WelcomeTask = require(`./src/welcome-task`);
+const VersionTask = require(`./src/version-task.js`);
+const HelpTask = require(`./src/help-task`);
+const AuthorTask = require(`./src/author-task`);
+const LicenseTask = require(`./src/license-task`);
+const DescriptionTask = require(`./src/description-task`);
 
 const command = process.argv[2];
 
-function setTask(task = WELCOME_MESSAGE) {
-  let message = ``;
+function setTask(task = new WelcomeTask().name) {
+  let currentTask = {};
 
   switch (task) {
 
-    case HELP_TASK:
-      message = `Доступные команды:
-      ${HELP_TASK}    — печатает этот текст;
-      ${VERSION_TASK} — печатает версию приложения;`;
+    case new HelpTask().name:
+      currentTask = new HelpTask();
       break;
-    case VERSION_TASK:
-      message = `v0.0.1`;
+    case new VersionTask().name:
+      currentTask = new VersionTask();
       break;
-    case WELCOME_MESSAGE:
-      message = WELCOME_MESSAGE;
+    case new AuthorTask().name:
+      currentTask = new AuthorTask();
+      break;
+    case new LicenseTask().name:
+      currentTask = new LicenseTask();
+      break;
+    case new DescriptionTask().name:
+      currentTask = new DescriptionTask();
+      break;
+    case new WelcomeTask().name:
+      currentTask = new WelcomeTask();
       break;
     default:
-      message = `Неизвестная команда ${command}.
-      Чтобы прочитать правила использования приложения, наберите ${HELP_TASK}`;
-      console.error(message);
+      console.error(`Неизвестная команда ${command}.
+      Доступные команды:
+        ${new HelpTask().name}    — ${new HelpTask().description};
+        ${new VersionTask().name} — ${new VersionTask().description};
+        ${new AuthorTask().name} — ${new AuthorTask().description};
+        ${new LicenseTask().name} — ${new LicenseTask().description};
+        ${new DescriptionTask().name} — ${new DescriptionTask().description};`);
       process.exit(1);
   }
 
-  console.log(message);
+  currentTask.execute();
 }
 
 setTask(command);
