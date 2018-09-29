@@ -12,6 +12,4 @@ class WelcomeTask extends BaseTask {
   }
 }
 
-const versionTask = new WelcomeTask();
-
-module.exports = versionTask;
+module.exports = WelcomeTask;

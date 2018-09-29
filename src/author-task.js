@@ -13,7 +13,5 @@ class AuthorTask extends BaseTask {
   }
 }
 
-const authorTask = new AuthorTask();
-
-module.exports = authorTask;
+module.exports = AuthorTask;
 

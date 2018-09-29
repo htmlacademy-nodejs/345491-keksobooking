@@ -13,7 +13,5 @@ class DescriptionTask extends BaseTask {
   }
 }
 
-const descriptionTask = new DescriptionTask();
-
-module.exports = descriptionTask;
+module.exports = DescriptionTask;
 

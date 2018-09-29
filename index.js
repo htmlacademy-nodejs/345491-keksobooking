@@ -1,45 +1,45 @@
 'use strict';
 
-const welcomeTask = require(`./src/welcome-task`);
-const versionTask = require(`./src/version-task.js`);
-const helpTask = require(`./src/help-task`);
-const authorTask = require(`./src/author-task`);
-const licenseTask = require(`./src/license-task`);
-const descriptionTask = require(`./src/description-task`);
+const WelcomeTask = require(`./src/welcome-task`);
+const VersionTask = require(`./src/version-task.js`);
+const HelpTask = require(`./src/help-task`);
+const AuthorTask = require(`./src/author-task`);
+const LicenseTask = require(`./src/license-task`);
+const DescriptionTask = require(`./src/description-task`);
 
 const command = process.argv[2];
 
-function setTask(task = welcomeTask.name) {
+function setTask(task = new WelcomeTask().name) {
   let currentTask = {};
 
   switch (task) {
 
-    case helpTask.name:
-      currentTask = helpTask;
+    case new HelpTask().name:
+      currentTask = new HelpTask();
       break;
-    case versionTask.name:
-      currentTask = versionTask;
+    case new VersionTask().name:
+      currentTask = new VersionTask();
       break;
-    case authorTask.name:
-      currentTask = authorTask;
+    case new AuthorTask().name:
+      currentTask = new AuthorTask();
       break;
-    case licenseTask.name:
-      currentTask = licenseTask;
+    case new LicenseTask().name:
+      currentTask = new LicenseTask();
       break;
-    case descriptionTask.name:
-      currentTask = descriptionTask;
+    case new DescriptionTask().name:
+      currentTask = new DescriptionTask();
       break;
-    case welcomeTask.name:
-      currentTask = welcomeTask;
+    case new WelcomeTask().name:
+      currentTask = new WelcomeTask();
       break;
     default:
       console.error(`Неизвестная команда ${command}.
       Доступные команды:
-        ${helpTask.name}    — ${helpTask.description};
-        ${versionTask.name} — ${versionTask.description};
-        ${authorTask.name} — ${authorTask.description};
-        ${licenseTask.name} — ${licenseTask.description};
-        ${descriptionTask.name} — ${descriptionTask.description};`);
+        ${new HelpTask().name}    — ${new HelpTask().description};
+        ${new VersionTask().name} — ${new VersionTask().description};
+        ${new AuthorTask().name} — ${new AuthorTask().description};
+        ${new LicenseTask().name} — ${new LicenseTask().description};
+        ${new DescriptionTask().name} — ${new DescriptionTask().description};`);
       process.exit(1);
   }
 

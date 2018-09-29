@@ -13,6 +13,4 @@ class VersionTask extends BaseTask {
   }
 }
 
-const versionTask = new VersionTask();
-
-module.exports = versionTask;
+module.exports = VersionTask;

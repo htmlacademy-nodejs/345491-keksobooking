@@ -13,7 +13,5 @@ class LicenseTask extends BaseTask {
   }
 }
 
-const licenseTask = new LicenseTask();
-
-module.exports = licenseTask;
+module.exports = LicenseTask;
 
