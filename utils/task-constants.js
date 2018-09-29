@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+const Tasks = {
   HELP_TASK: `--help`,
   VERSION_TASK: `--version`,
   WELCOME_MESSAGE: `Привет пользователь!
@@ -10,3 +10,5 @@ module.exports = {
   LICENSE_TASK: `--license`,
   DESCRIPTION_TASK: `--description`
 };
+
+module.exports = Tasks;

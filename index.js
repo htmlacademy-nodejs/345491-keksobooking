@@ -34,11 +34,11 @@ function setTask(task = TASK_LIST.WELCOME_MESSAGE) {
     default:
       console.error(`Неизвестная команда ${command}.
       Доступные команды:
-        ${helpTask.name}    — вызов справки;
-        ${versionTask.name} — текущая версия;
-        ${authorTask.name} — сведения об авторе;
-        ${licenseTask.name} — сведения о лицензии;
-        ${descriptionTask.name} — описание приложения;`);
+        ${helpTask.name}    — ${helpTask.description};
+        ${versionTask.name} — ${versionTask.description};
+        ${authorTask.name} — ${authorTask.description};
+        ${licenseTask.name} — ${licenseTask.description};
+        ${descriptionTask.name} — ${descriptionTask.description};`);
       process.exit(1);
   }
 }
