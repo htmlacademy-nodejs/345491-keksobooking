@@ -11,111 +11,99 @@ describe(`testing of generateEntity`, function () {
   describe(`checking of avatar field`, function () {
 
     it(`has correct address`, function () {
-      assert.equal(generateEntity().author.avatar.search(/https:\/\//i), 0);
+      assert.equal(testingEntity.author.avatar.search(/https:\/\//i), 0);
     });
   });
 
   describe(`checking of title field`, function () {
 
     it(`contains right element`, function () {
-      assert.notEqual(TITLES.indexOf(generateEntity().offer.title), -1);
+      assert.notEqual(TITLES.indexOf(testingEntity.offer.title), -1);
     });
   });
 
   describe(`checking of price field`, function () {
 
     it(`has price which is not out of range`, function () {
-      assert.equal(((generateEntity().offer.price >= START_PRICE) && (generateEntity().offer.price <= END_PRICE)), true);
-    });
-    it(`has price which is out of range`, function () {
-      assert.notEqual(((generateEntity().offer.price >= START_PRICE) && (generateEntity().offer.price * END_PRICE < END_PRICE)), true);
+      assert.equal(((testingEntity.offer.price >= START_PRICE) && (testingEntity.offer.price <= END_PRICE)), true);
     });
   });
 
   describe(`checking of type field`, function () {
 
     it(`contains right element`, function () {
-      assert.notEqual(TYPES.indexOf(generateEntity().offer.type), -1);
+      assert.notEqual(TYPES.indexOf(testingEntity.offer.type), -1);
     });
   });
 
   describe(`checking of rooms field`, function () {
 
     it(`has right count of rooms`, function () {
-      assert.equal(((generateEntity().offer.rooms >= MIN_ROOM) && (generateEntity().offer.rooms <= MAX_ROOM)), true);
+      assert.equal(((testingEntity.offer.rooms >= MIN_ROOM) && (testingEntity.offer.rooms <= MAX_ROOM)), true);
     });
     it(`has correct type`, function () {
-      assert.equal(typeof generateEntity().offer.rooms, `number`);
+      assert.equal(typeof testingEntity.offer.rooms, `number`);
     });
   });
 
   describe(`checking of guests field`, function () {
 
     it(`has correct type`, function () {
-      assert.equal(typeof generateEntity().offer.guests === `number`, true);
+      assert.equal(typeof testingEntity.offer.guests === `number`, true);
     });
 
     it(`has correct type`, function () {
-      assert.equal((generateEntity().offer.guests <= MAX_GUESTS && generateEntity().offer.guests >= 0), true);
+      assert.equal((testingEntity.offer.guests <= MAX_GUESTS && testingEntity.offer.guests >= 0), true);
     });
   });
 
   describe(`checking of check in & out field`, function () {
 
     it(`contains right element`, function () {
-      assert.notEqual(CHECK.indexOf(generateEntity().offer.checkin), -1);
+      assert.notEqual(CHECK.indexOf(testingEntity.offer.checkin), -1);
     });
 
     it(`contains right element`, function () {
-      assert.notEqual(CHECK.indexOf(generateEntity().offer.checkout), -1);
+      assert.notEqual(CHECK.indexOf(testingEntity.offer.checkout), -1);
     });
   });
 
   describe(`checking of features field`, function () {
 
     it(`has not alien elements`, function () {
-      let alien = 0;
-      for (let i = 0; i < testingEntity.offer.features.length; i++) {
-        alien = (FEATURES.indexOf(testingEntity.offer.features[i]) !== -1) ? alien : alien++;
-      }
-      assert.equal(alien, 0);
+      const isThere = (it) => FEATURES.indexOf(it) !== -1;
+      assert.equal(testingEntity.offer.features.every(isThere), true);
     });
 
     it(`has not repeating elements`, function () {
-      let repeat = 0;
-      for (let i = 0; i < testingEntity.offer.features.length; i++) {
-        repeat = (testingEntity.offer.features.indexOf(testingEntity.offer.features[i]) === (testingEntity.offer.features.length - testingEntity.offer.features.lastIndexOf(testingEntity.offer.features[i]))) ? repeat : repeat++;
-      }
-      assert.equal(repeat, 0);
+      const isOne = (it, ind, arr) => arr.indexOf(it) === ind;
+
+      assert.equal(testingEntity.offer.features.every(isOne), true);
     });
 
     it(`has random element from the initial array`, function () {
-      assert.equal(FEATURES.indexOf(generateEntity().offer.features[0]) !== -1, true);
+      assert.equal(FEATURES.indexOf(testingEntity.offer.features[0]) !== -1, true);
     });
   });
 
   describe(`checking of description field`, function () {
 
     it(`has correct type`, function () {
-      assert.equal(typeof generateEntity().offer.description === `string`, true);
+      assert.equal(typeof testingEntity.offer.description === `string`, true);
     });
   });
 
   describe(`checking of photos field`, function () {
 
     it(`has random element from the initial array`, function () {
-      assert.equal(PHOTOS.indexOf(generateEntity().offer.photos[createRandom(PHOTOS.length - 1)]) !== -1, true);
+      assert.equal(PHOTOS.indexOf(testingEntity.offer.photos[createRandom(PHOTOS.length - 1)]) !== -1, true);
     });
   });
 
   describe(`checking of location field`, function () {
 
     it(`has location which in range`, function () {
-      assert.equal(((generateEntity().location.x >= START_X) && (generateEntity().location.y >= START_Y) && (generateEntity().location.x <= END_X) && (generateEntity().location.y <= END_Y)), true);
-    });
-
-    it(`has location which out of range`, function () {
-      assert.equal(((generateEntity().location.x * END_X <= END_X) && (generateEntity().location.y * END_Y <= END_Y)), false);
+      assert.equal(((testingEntity.location.x >= START_X) && (testingEntity.location.y >= START_Y) && (testingEntity.location.x <= END_X) && (testingEntity.location.y <= END_Y)), true);
     });
 
   });
@@ -123,7 +111,7 @@ describe(`testing of generateEntity`, function () {
   describe(`checking of date field`, function () {
 
     it(`shows that you are not from future or past`, function () {
-      assert.equal((generateEntity().date <= Date.now()) && (generateEntity().date >= Date.now() - (SEVEN_DAYS * 24 * 60 * 60 * 1000)), true);
+      assert.equal((testingEntity.date <= Date.now()) && (testingEntity.date >= Date.now() - (SEVEN_DAYS * 24 * 60 * 60 * 1000)), true);
     });
 
   });
