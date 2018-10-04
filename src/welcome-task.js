@@ -2,7 +2,7 @@
 
 const colors = require(`colors/safe`);
 
-const WELCOME_MESSAGE = colors.rainbow(require(`../utils/task-constants`).WELCOME_MESSAGE);
+const WELCOME_MESSAGE = colors.green(require(`../utils/task-constants`).WELCOME_MESSAGE);
 const currentTask = ``;
 const BaseTask = require(`../utils/task-constructor`);
 
