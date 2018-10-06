@@ -12,6 +12,13 @@ const readline = require(`readline`);
 const generateElements = require(`../utils/generate-elements.js`);
 let homes = [];
 
+const errHandler = (err) => {
+  if (err) {
+    console.error(err);
+  }
+};
+
+
 class WelcomeTask extends BaseTask {
   constructor() {
     super(currentTask, DESCRIPTION, WELCOME_MESSAGE);
@@ -25,6 +32,38 @@ class WelcomeTask extends BaseTask {
       output: process.stdout,
     });
 
+    const openHandler = (way) => {
+      fs.open(`${process.cwd()}/${way}/data.json`, `wx`, (err1) => {
+        if (err1) {
+          if (err1.code === `EEXIST`) {
+
+            gen.question(`файл уже существует, хочешь перезаписать? (yes/no)  `, (choice) => {
+              switch (choice) {
+                case `yes`:
+                  fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, errHandler);
+
+                  // setImmediate(() => gen.close());
+
+                  break;
+                case `no`:
+                  gen.close();
+                  return;
+                default:
+                  console.log(`what did you say?`);
+                  break;
+              }
+            });
+            return;
+          }
+
+          console.error(err1);
+        }
+
+        fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, errHandler);
+
+      });
+    };
+
     gen.question(`Чувак, ты хочешь сгенерировать данные? (yes/no)  `, (answer) => {
       switch (answer) {
         case `yes`:
@@ -36,43 +75,7 @@ class WelcomeTask extends BaseTask {
 
               gen.question(`укажи имя папки для сохранения данных  `, (way) => {
 
-                fs.open(`${process.cwd()}/${way}/data.json`, `wx`, (err1) => {
-                  if (err1) {
-                    if (err1.code === 'EEXIST') {
-
-                      gen.question(`файл уже существует, хочешь перезаписать? (yes/no)  `, (choice) => {
-                        switch (choice) {
-                          case `yes`:
-                            fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (err) => {
-                              if (err) {
-                                console.error(err);
-                              }
-                            });
-
-                            // setImmediate(() => gen.close());
-
-                            break;
-                          case `no`:
-                            gen.close();
-                            return;
-                          default:
-                            console.log(`what did you say?`);
-                            break;
-                        }
-                      });
-                      return;
-                    }
-
-                    console.error(err1);
-                  }
-
-                  fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (err) => {
-                    if (err) {
-                      console.error(err);
-                    }
-                  });
-
-                });
+                openHandler(way);
 
               });
 
