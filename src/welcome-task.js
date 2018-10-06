@@ -1,8 +1,8 @@
 'use strict';
 
 const colors = require(`colors/safe`);
+const fs = require(`fs`);
 
-// const gen = require(`./generation-cli.js`);
 const WELCOME_MESSAGE = colors.green(require(`../utils/task-constants`).WELCOME_MESSAGE);
 const currentTask = ``;
 const BaseTask = require(`../utils/task-constructor`);
@@ -10,6 +10,7 @@ const DESCRIPTION = `welcome`;
 
 const readline = require(`readline`);
 const generateElements = require(`../utils/generate-elements.js`);
+let homes = [];
 
 class WelcomeTask extends BaseTask {
   constructor() {
@@ -18,22 +19,68 @@ class WelcomeTask extends BaseTask {
 
   execute() {
     super.execute();
-    console.log(`Чувак, ты хочешь сгенерировать данные? (yes/no)`);
 
     const gen = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
-      prompt: `data-creating process>`
     });
 
-    gen.on(`line`, (line) => {
-      line = line.trim();
-
-      switch (line) {
-
+    gen.question(`Чувак, ты хочешь сгенерировать данные? (yes/no)  `, (answer) => {
+      switch (answer) {
         case `yes`:
-          console.log(`создание одного элемента`);
-          console.log(JSON.stringify(generateElements(1)));
+          gen.question(`сколько элементов надо создать?  `, (count) => {
+            if (count >= 1) {
+
+              homes = JSON.stringify(generateElements(count));
+              // console.log(homes);
+
+              gen.question(`укажи имя папки для сохранения данных  `, (way) => {
+
+                fs.open(`${process.cwd()}/${way}/data.json`, `wx`, (err1) => {
+                  if (err1) {
+                    if (err1.code === 'EEXIST') {
+
+                      gen.question(`файл уже существует, хочешь перезаписать? (yes/no)  `, (choice) => {
+                        switch (choice) {
+                          case `yes`:
+                            fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (err) => {
+                              if (err) {
+                                console.error(err);
+                              }
+                            });
+
+                            // setImmediate(() => gen.close());
+
+                            break;
+                          case `no`:
+                            gen.close();
+                            return;
+                          default:
+                            console.log(`what did you say?`);
+                            break;
+                        }
+                      });
+                      return;
+                    }
+
+                    console.error(err1);
+                  }
+
+                  fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (err) => {
+                    if (err) {
+                      console.error(err);
+                    }
+                  });
+
+                });
+
+              });
+
+            } else {
+              console.log(`это не число`);
+              gen.close();
+            }
+          });
           break;
         case `no`:
           gen.close();
@@ -42,10 +89,10 @@ class WelcomeTask extends BaseTask {
           console.log(`what did you say?`);
           break;
       }
+    });
 
-      gen.prompt();
-    }).on(`close`, () => {
-      console.log(`abort of data-creating process`);
+    gen.on(`close`, () => {
+      console.log(`end of data-creating process`);
       process.exit(0);
     }).on(`error`, () => {
       console.log(`error!`);

@@ -1,7 +1,7 @@
 'use strict';
 
 const readline = require(`readline`);
-const generateElements = require(`../utils/generate-elements.js`);
+const generateElements = require(`./utils/generate-elements.js`);
 
 const gen = readline.createInterface({
   input: process.stdin,
