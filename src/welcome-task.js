@@ -2,20 +2,26 @@
 
 const colors = require(`colors/safe`);
 const fs = require(`fs`);
-
-const WELCOME_MESSAGE = colors.green(require(`../utils/task-constants`).WELCOME_MESSAGE);
-const currentTask = ``;
-const BaseTask = require(`../utils/task-constructor`);
-const DESCRIPTION = `welcome`;
-
 const readline = require(`readline`);
 const generateElements = require(`../utils/generate-elements.js`);
+const WELCOME_MESSAGE = colors.green(require(`../utils/task-constants`).WELCOME_MESSAGE);
+const BaseTask = require(`../utils/task-constructor`);
+
+const currentTask = ``;
+const DESCRIPTION = `welcome`;
+const POSITIVE = `yes`;
+const NEGATIVE = `no`;
 let homes = [];
 
-const errHandler = (err) => {
-  if (err) {
-    console.error(err);
-  }
+const writeData = (count, way, exit) => {
+  homes = JSON.stringify(generateElements(count));
+  fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (err) => {
+    if (err) {
+      console.error(err);
+    }
+
+    exit();
+  });
 };
 
 
@@ -36,22 +42,22 @@ class WelcomeTask extends BaseTask {
       gen.close();
     };
 
-    const openHandler = (way) => {
+    const openHandler = (way, count) => {
       fs.open(`${process.cwd()}/${way}/data.json`, `wx`, (err1) => {
         if (err1) {
           if (err1.code === `EEXIST`) {
 
             gen.question(`файл уже существует, хочешь перезаписать? (yes/no)  `, (choice) => {
               switch (choice) {
-                case `yes`:
-                  fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (errHandler, closeDialog));
-
+                case POSITIVE:
+                  writeData(count, way, closeDialog);
                   break;
-                case `no`:
+                case NEGATIVE:
                   gen.close();
                   return;
                 default:
                   console.log(`what did you say?`);
+                  openHandler(way, count);
                   break;
               }
             });
@@ -61,39 +67,43 @@ class WelcomeTask extends BaseTask {
           console.error(err1);
         }
 
-        fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (errHandler, closeDialog));
+        writeData(count, way, closeDialog);
 
       });
     };
 
-    gen.question(`Чувак, ты хочешь сгенерировать данные? (yes/no)  `, (answer) => {
-      switch (answer) {
-        case `yes`:
-          gen.question(`сколько элементов надо создать?  `, (count) => {
-            if (count >= 1) {
+    const startConversation = () => {
+      gen.question(`Чувак, ты хочешь сгенерировать данные? (yes/no)  `, (answer) => {
+        switch (answer) {
+          case POSITIVE:
+            gen.question(`сколько элементов надо создать?  `, (count) => {
+              if (+count >= 1) {
 
-              homes = JSON.stringify(generateElements(count));
+                gen.question(`укажи имя папки для сохранения данных  `, (way) => {
 
-              gen.question(`укажи имя папки для сохранения данных  `, (way) => {
+                  openHandler(way, count);
 
-                openHandler(way);
+                });
 
-              });
+              } else {
+                console.log(`это не число`);
+                gen.close();
+              }
+            });
+            break;
+          case NEGATIVE:
+            gen.close();
+            return;
+          default:
+            console.log(`what did you say?`);
+            startConversation();
+            break;
+        }
+      });
+    };
 
-            } else {
-              console.log(`это не число`);
-              gen.close();
-            }
-          });
-          break;
-        case `no`:
-          gen.close();
-          return;
-        default:
-          console.log(`what did you say?`);
-          break;
-      }
-    });
+    startConversation();
+
 
     gen.on(`close`, () => {
       console.log(`end of data-creating process`);
