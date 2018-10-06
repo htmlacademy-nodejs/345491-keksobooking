@@ -12,4 +12,9 @@ const Tasks = {
   DESCRIPTION_TASK: `--description`
 };
 
-module.exports = {Tasks, WELCOME_MESSAGE};
+const Answers = {
+  POSITIVE: `yes`,
+  NEGATIVE: `no`
+};
+
+module.exports = {Tasks, Answers, WELCOME_MESSAGE};

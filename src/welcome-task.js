@@ -6,15 +6,13 @@ const readline = require(`readline`);
 const generateElements = require(`../utils/generate-elements.js`);
 const WELCOME_MESSAGE = colors.green(require(`../utils/task-constants`).WELCOME_MESSAGE);
 const BaseTask = require(`../utils/task-constructor`);
+const {POSITIVE, NEGATIVE} = require(`../utils/task-constants`).Answers;
 
 const currentTask = ``;
 const DESCRIPTION = `welcome`;
-const POSITIVE = `yes`;
-const NEGATIVE = `no`;
-let homes = [];
 
 const writeData = (count, way, exit) => {
-  homes = JSON.stringify(generateElements(count));
+  let homes = JSON.stringify(generateElements(count));
   fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (err) => {
     if (err) {
       console.error(err);
