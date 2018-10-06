@@ -32,6 +32,10 @@ class WelcomeTask extends BaseTask {
       output: process.stdout,
     });
 
+    const closeDialog = () => {
+      gen.close();
+    };
+
     const openHandler = (way) => {
       fs.open(`${process.cwd()}/${way}/data.json`, `wx`, (err1) => {
         if (err1) {
@@ -40,9 +44,7 @@ class WelcomeTask extends BaseTask {
             gen.question(`файл уже существует, хочешь перезаписать? (yes/no)  `, (choice) => {
               switch (choice) {
                 case `yes`:
-                  fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, errHandler);
-
-                  // setImmediate(() => gen.close());
+                  fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (errHandler, closeDialog));
 
                   break;
                 case `no`:
@@ -59,7 +61,7 @@ class WelcomeTask extends BaseTask {
           console.error(err1);
         }
 
-        fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, errHandler);
+        fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (errHandler, closeDialog));
 
       });
     };
@@ -71,7 +73,6 @@ class WelcomeTask extends BaseTask {
             if (count >= 1) {
 
               homes = JSON.stringify(generateElements(count));
-              // console.log(homes);
 
               gen.question(`укажи имя папки для сохранения данных  `, (way) => {
 
