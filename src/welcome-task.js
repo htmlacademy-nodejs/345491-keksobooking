@@ -12,7 +12,7 @@ const currentTask = ``;
 const DESCRIPTION = `welcome`;
 
 const writeData = (count, way, exit) => {
-  let homes = JSON.stringify(generateElements(count));
+  const homes = JSON.stringify(generateElements(count));
   fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (err) => {
     if (err) {
       console.error(err);
