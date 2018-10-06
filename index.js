@@ -1,6 +1,6 @@
 'use strict';
 
-const WelcomeTask = require(`./src/welcome-task`);
+const WelcomeTask = require(`./src/welcome-task`).WelcomeTask;
 const VersionTask = require(`./src/version-task.js`);
 const HelpTask = require(`./src/help-task`);
 const AuthorTask = require(`./src/author-task`);

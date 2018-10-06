@@ -113,4 +113,4 @@ class WelcomeTask extends BaseTask {
   }
 }
 
-module.exports = WelcomeTask;
+module.exports = {WelcomeTask, writeData};
