@@ -17,7 +17,7 @@ describe(`testing of generated file`, function () {
     writeData(TEST_COUNT, TEST_WAY, isCreated);
   });
 
-  it(`contains rigth data`, function () {
+  it(`contains rigth data`, function (done) {
     let arrLength = 0;
 
     fs.readFile(`${process.cwd()}/${TEST_WAY}/data.json`, `utf8`, (err, data) => {
@@ -28,12 +28,13 @@ describe(`testing of generated file`, function () {
       arrLength = +JSON.parse(data).length;
 
       assert.equal(arrLength, TEST_COUNT);
+      done();
     });
 
   });
 
 
-  it(`creates the file`, function () {
+  it(`creates the file`, function (done) {
     const testFunc = () => {
       existence = true;
     };
@@ -50,13 +51,14 @@ describe(`testing of generated file`, function () {
 
       testFunc();
       assert.equal(existence, true);
+      done();
 
     });
 
 
   });
 
-  it(`rewrites the file`, function () {
+  it(`rewrites the file`, function (done) {
     let arrLength = 0;
 
     fs.open(`${process.cwd()}/${TEST_WAY}/data.json`, `wx`, (err) => {
@@ -72,6 +74,7 @@ describe(`testing of generated file`, function () {
 
         console.error(err);
       }
+      done();
 
     });
 
@@ -83,6 +86,7 @@ describe(`testing of generated file`, function () {
       arrLength = +JSON.parse(data).length;
 
       assert.equal(arrLength, TEST_COUNT2);
+      done();
     });
 
 
