@@ -8,7 +8,6 @@ const TEST_WAY = `test`;
 const TEST_COUNT = 5;
 const TEST_COUNT2 = 2;
 const isCreated = () => console.log(`created`);
-let existence = false;
 
 
 describe(`testing of generated file`, function () {
@@ -17,27 +16,24 @@ describe(`testing of generated file`, function () {
     writeData(TEST_COUNT, TEST_WAY, isCreated);
   });
 
-  it(`contains rigth data`, function (done) {
-    let arrLength = 0;
+  it(`contains right data`, function (done) {
 
     fs.readFile(`${process.cwd()}/${TEST_WAY}/data.json`, `utf8`, (err, data) => {
       if (err) {
         console.error(err);
       }
 
-      arrLength = +JSON.parse(data).length;
+      let arrLength = +JSON.parse(data).length;
 
       assert.equal(arrLength, TEST_COUNT);
+
       done();
     });
 
   });
 
 
-  it(`creates the file`, function (done) {
-    const testFunc = () => {
-      existence = true;
-    };
+  it(`created the file`, function (done) {
 
     fs.open(`${process.cwd()}/${TEST_WAY}/data.json`, `r`, (err) => {
       if (err) {
@@ -49,8 +45,7 @@ describe(`testing of generated file`, function () {
         console.error(err);
       }
 
-      testFunc();
-      assert.equal(existence, true);
+      assert.equal(!!err, false);
       done();
 
     });
