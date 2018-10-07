@@ -12,8 +12,16 @@ const isCreated = () => console.log(`created`);
 
 describe(`testing of generated file`, function () {
 
-  before(`generate test file`, function () {
+  beforeEach(`generate test file`, function () {
     writeData(TEST_COUNT, TEST_WAY, isCreated);
+  });
+
+  afterEach(`delete test file`, function () {
+    fs.unlink(`${process.cwd()}/${TEST_WAY}/data.json`, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
   });
 
   it(`contains right data`, function (done) {
@@ -33,7 +41,8 @@ describe(`testing of generated file`, function () {
   });
 
   it(`rewrites the file`, function (done) {
-    let arrLength = 0;
+
+    writeData(TEST_COUNT2, TEST_WAY, isCreated);
 
     fs.open(`${process.cwd()}/${TEST_WAY}/data.json`, `wx`, (err) => {
       if (err) {
@@ -44,10 +53,13 @@ describe(`testing of generated file`, function () {
 
         if (err.code === `EEXIST`) {
           writeData(TEST_COUNT2, TEST_WAY, isCreated);
+
         }
 
         console.error(err);
       }
+
+
       done();
 
     });
@@ -57,7 +69,7 @@ describe(`testing of generated file`, function () {
         console.error(err);
       }
 
-      arrLength = +JSON.parse(data).length;
+      let arrLength = +JSON.parse(data).length;
 
       assert.equal(arrLength, TEST_COUNT2);
       done();
