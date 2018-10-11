@@ -9,7 +9,8 @@ const Tasks = {
   VERSION_TASK: `--version`,
   AUTHOR_TASK: `--author`,
   LICENSE_TASK: `--license`,
-  DESCRIPTION_TASK: `--description`
+  DESCRIPTION_TASK: `--description`,
+  SERVER_START_TASK: `--server`
 };
 
 const Answers = {

@@ -6,8 +6,10 @@ const HelpTask = require(`./src/help-task`);
 const AuthorTask = require(`./src/author-task`);
 const LicenseTask = require(`./src/license-task`);
 const DescriptionTask = require(`./src/description-task`);
+const ServerStartTask = require(`./src/server-start-task`);
 
 const command = process.argv[2];
+const port = parseInt(process.argv[3], 10);
 
 function setTask(task = new WelcomeTask().name) {
   let currentTask = {};
@@ -32,6 +34,9 @@ function setTask(task = new WelcomeTask().name) {
     case new WelcomeTask().name:
       currentTask = new WelcomeTask();
       break;
+    case new ServerStartTask().name:
+      currentTask = new ServerStartTask();
+      break;
     default:
       console.error(`Неизвестная команда ${command}.
       Доступные команды:
@@ -43,7 +48,7 @@ function setTask(task = new WelcomeTask().name) {
       process.exit(1);
   }
 
-  currentTask.execute();
+  currentTask.execute(port);
 }
 
 setTask(command);
