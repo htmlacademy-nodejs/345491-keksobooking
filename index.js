@@ -9,7 +9,7 @@ const DescriptionTask = require(`./src/description-task`);
 const ServerStartTask = require(`./src/server-start-task`);
 
 const command = process.argv[2];
-const port = parseInt(process.argv[3]);
+const port = parseInt(process.argv[3], 10);
 
 function setTask(task = new WelcomeTask().name) {
   let currentTask = {};
