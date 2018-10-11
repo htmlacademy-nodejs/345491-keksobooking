@@ -118,6 +118,4 @@ class ServerStartTask extends BaseTask {
   }
 }
 
-new ServerStartTask().execute(3333);
-
 module.exports = ServerStartTask;
