@@ -6,7 +6,8 @@ const HelpTask = require(`./src/help-task`);
 const AuthorTask = require(`./src/author-task`);
 const LicenseTask = require(`./src/license-task`);
 const DescriptionTask = require(`./src/description-task`);
-const ServerStartTask = require(`./src/server-start-task`);
+// const ServerStartTask = require(`./src/server-start-task`);
+const ServerStartTask = require(`./src/server`).ServerStartTask;
 
 const command = process.argv[2];
 const port = parseInt(process.argv[3], 10);
