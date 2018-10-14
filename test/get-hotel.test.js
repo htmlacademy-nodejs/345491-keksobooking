@@ -3,10 +3,13 @@
 const request = require(`supertest`);
 const assert = require(`assert`);
 const app = require(`../src/server`).app;
+const ServerStartTask = require(`../src/server`).ServerStartTask;
 const testHotels = require(`../src/hotels/hotel-router.js`).hotels;
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
+
+new ServerStartTask().execute();
 
 describe(`GET /api/offers`, () => {
   it(`get all hotels`, async () => {

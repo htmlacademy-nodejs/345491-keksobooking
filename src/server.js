@@ -5,7 +5,7 @@ const {SERVER_START_TASK: currentTask} = require(`../utils/task-constants`).Task
 const hotelRouter = require(`./hotels/hotel-router.js`).hotelRouter;
 const BaseTask = require(`../utils/task-constructor`);
 
-const PORT = 3706;
+const PORT = 3010;
 const MESSAGE = `Server started`;
 const DESCRIPTION = `connection with server`;
 
