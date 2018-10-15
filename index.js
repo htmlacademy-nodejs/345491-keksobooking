@@ -1,11 +1,11 @@
 'use strict';
 
 const WelcomeTask = require(`./src/welcome-task`).WelcomeTask;
-const VersionTask = require(`./src/version-task.js`);
+const VersionTask = require(`./src/version-task`);
 const HelpTask = require(`./src/help-task`);
 const AuthorTask = require(`./src/author-task`);
 const LicenseTask = require(`./src/license-task`);
-const DescriptionTask = require(`./src/description-task.js`);
+const DescriptionTask = require(`./src/description-task`);
 const ServerTask = require(`./src/server-task`).ServerTask;
 
 const command = process.argv[2];

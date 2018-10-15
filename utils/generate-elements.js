@@ -1,6 +1,6 @@
 'use strict';
 
-const {generateEntity} = require(`../src/generate-entity.js`);
+const {generateEntity} = require(`../src/generate-entity`);
 
 function generateElements(n) {
   let elements = [];

@@ -2,8 +2,8 @@
 
 const express = require(`express`);
 const hotelRouter = new express.Router();
-const generateElements = require(`../../utils/generate-elements.js`);
-const ArgumentError = require(`../../utils/errors.js`);
+const generateElements = require(`../../utils/generate-elements`);
+const ArgumentError = require(`../../utils/errors`);
 // const multer = require(`multer`);
 
 const CODE_400 = 400;

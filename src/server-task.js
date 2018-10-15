@@ -2,7 +2,7 @@
 
 const express = require(`express`);
 const {SERVER_START_TASK: currentTask} = require(`../utils/task-constants`).Tasks;
-const hotelRouter = require(`./hotels/hotel-router.js`).hotelRouter;
+const hotelRouter = require(`./hotels/hotel-router`).hotelRouter;
 const BaseTask = require(`../utils/task-constructor`);
 
 const PORT = 3098;

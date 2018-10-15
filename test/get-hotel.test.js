@@ -4,7 +4,7 @@ const request = require(`supertest`);
 const assert = require(`assert`);
 
 const getExpressInstance = require(`../src/server-task`).getExpressInstance;
-const testHotels = require(`../src/hotels/hotel-router.js`).hotels;
+const testHotels = require(`../src/hotels/hotel-router`).hotels;
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
