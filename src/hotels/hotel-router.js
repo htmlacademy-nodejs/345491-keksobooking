@@ -4,7 +4,9 @@ const express = require(`express`);
 const hotelRouter = new express.Router();
 const generateElements = require(`../../utils/generate-elements`);
 const ArgumentError = require(`../../utils/errors`);
-// const multer = require(`multer`);
+const multer = require(`multer`);
+// const storage = multer.memoryStorage();
+const upload = multer({storage: multer.memoryStorage()});
 
 const CODE_400 = 400;
 const CODE_404 = 404;
@@ -46,9 +48,14 @@ hotelRouter.get(`/:date`, (req, res) => {
   res.send(found);
 });
 
-hotelRouter.post(``, parser, (req, res) => {
+hotelRouter.post(``, parser, upload.single(`avatar`), (req, res) => {
 
   const body = req.body;
+  const avatar = req.file;
+
+  if (avatar) {
+    body.avatar = {flatName: avatar.originalname};
+  }
 
   res.send(body);
 

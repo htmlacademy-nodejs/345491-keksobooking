@@ -95,4 +95,39 @@ describe(`POST /api/offers`, () => {
     assert.deepEqual(testHotels, hotels);
   });
 
+  it(`sends offer as multipart/form-data`, async () => {
+
+    const firstTitle = testHotels[0].offer.title;
+
+    const response = await request(app).
+    post(`/api/offers`).
+    field(`title`, firstTitle).
+    set(`Accept`, `application/json`).
+    set(`Content-Type`, `multipart/form-data`).
+    expect(200).
+    expect(`Content-Type`, /json/);
+
+    const hotel = response.body;
+
+    assert.deepEqual(firstTitle, hotel.title);
+  });
+
+  it(`sends offer with avatar as multipart/form-data`, async () => {
+
+    const firstTitle = testHotels[0].offer.title;
+
+    const response = await request(app).
+    post(`/api/offers`).
+    field(`title`, firstTitle).
+    attach(`avatar`, `${__dirname}/../static/img/avatars/user01.png`).
+    set(`Accept`, `application/json`).
+    set(`Content-Type`, `multipart/form-data`).
+    expect(200).
+    expect(`Content-Type`, /json/);
+
+    const offer = response.body;
+
+    assert.deepEqual(offer, {title: firstTitle, avatar: {flatName: `user01.png`}});
+  });
+
 });
