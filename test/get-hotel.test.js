@@ -2,19 +2,21 @@
 
 const request = require(`supertest`);
 const assert = require(`assert`);
-const app = require(`../src/server`).app;
+
+const liftServer = require(`../src/server`).liftServer;
 const ServerStartTask = require(`../src/server`).ServerStartTask;
 const testHotels = require(`../src/hotels/hotel-router.js`).hotels;
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
+const doPort = () => 2000 + Math.floor(Math.random() * 65000);
 
 new ServerStartTask().execute();
 
 describe(`GET /api/offers`, () => {
   it(`get all hotels`, async () => {
 
-    const response = await request(app).
+    const response = await request(liftServer(doPort())).
     get(`/api/offers`).
     set(`Accept`, `application/json`).
     expect(200).
@@ -25,7 +27,7 @@ describe(`GET /api/offers`, () => {
   });
 
   it(`get data from unknown resource`, async () => {
-    return await request(app).
+    return await request(liftServer(doPort())).
     get(`/api/coffee`).
     set(`Accept`, `application/json`).
     expect(404).
@@ -37,7 +39,7 @@ describe(`GET /api/offers`, () => {
 
 describe(`GET /api/offers/:date`, () => {
   it(`get first hotel date"`, async () => {
-    const response = await request(app).
+    const response = await request(liftServer(doPort())).
     get(`/api/offers/${testHotels[0].date}`).
     set(`Accept`, `application/json`).
     expect(200).
@@ -48,7 +50,7 @@ describe(`GET /api/offers/:date`, () => {
   });
 
   it(`get unknown date"`, async () => {
-    return request(app).
+    return request(liftServer(doPort())).
     get(`/api/offers/${RANDOM_DATE}`).
     set(`Accept`, `application/json`).
     expect(404).
@@ -62,7 +64,7 @@ describe(`GET /api/offers?skip=10&limit=5`, () => {
 
     const LIMIT_COUNT = 5;
 
-    const response = await request(app).
+    const response = await request(liftServer(doPort())).
     get(`/api/offers?skip=10&limit=5`).
     set(`Accept`, `application/json`).
     expect(200).

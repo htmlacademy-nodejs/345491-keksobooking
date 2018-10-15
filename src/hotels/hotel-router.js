@@ -4,6 +4,7 @@ const express = require(`express`);
 const hotelRouter = new express.Router();
 const generateElements = require(`../../utils/generate-elements.js`);
 const ArgumentError = require(`../../utils/errors.js`);
+// const multer = require(`multer`);
 
 const CODE_400 = 400;
 const CODE_404 = 404;
@@ -11,6 +12,7 @@ const SKIP_COUNT = 0;
 const LIMIT_COUNT = 20;
 
 const hotels = generateElements(LIMIT_COUNT);
+const parser = express.json();
 
 hotelRouter.get(``, (req, res) => {
 
@@ -42,6 +44,14 @@ hotelRouter.get(`/:date`, (req, res) => {
   }
 
   res.send(found);
+});
+
+hotelRouter.post(``, parser, (req, res) => {
+
+  const body = req.body;
+
+  res.send(body);
+
 });
 
 module.exports = {hotelRouter, hotels};
