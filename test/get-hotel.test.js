@@ -4,19 +4,16 @@ const request = require(`supertest`);
 const assert = require(`assert`);
 
 const liftServer = require(`../src/server`).liftServer;
-const ServerStartTask = require(`../src/server`).ServerStartTask;
 const testHotels = require(`../src/hotels/hotel-router.js`).hotels;
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
-const doPort = () => 2000 + Math.floor(Math.random() * 65000);
-
-new ServerStartTask().execute();
+const app = liftServer();
 
 describe(`GET /api/offers`, () => {
   it(`get all hotels`, async () => {
 
-    const response = await request(liftServer(doPort())).
+    const response = await request(app).
     get(`/api/offers`).
     set(`Accept`, `application/json`).
     expect(200).
@@ -27,7 +24,7 @@ describe(`GET /api/offers`, () => {
   });
 
   it(`get data from unknown resource`, async () => {
-    return await request(liftServer(doPort())).
+    return await request(app).
     get(`/api/coffee`).
     set(`Accept`, `application/json`).
     expect(404).
@@ -39,18 +36,18 @@ describe(`GET /api/offers`, () => {
 
 describe(`GET /api/offers/:date`, () => {
   it(`get first hotel date"`, async () => {
-    const response = await request(liftServer(doPort())).
+    const response = await request(app).
     get(`/api/offers/${testHotels[0].date}`).
     set(`Accept`, `application/json`).
     expect(200).
     expect(`Content-Type`, /json/);
-
     const hotel = response.body;
+
     assert.strictEqual(hotel.date, testHotels[0].date);
   });
 
   it(`get unknown date"`, async () => {
-    return request(liftServer(doPort())).
+    return await request(app).
     get(`/api/offers/${RANDOM_DATE}`).
     set(`Accept`, `application/json`).
     expect(404).
@@ -64,7 +61,7 @@ describe(`GET /api/offers?skip=10&limit=5`, () => {
 
     const LIMIT_COUNT = 5;
 
-    const response = await request(liftServer(doPort())).
+    const response = await request(app).
     get(`/api/offers?skip=10&limit=5`).
     set(`Accept`, `application/json`).
     expect(200).
@@ -72,6 +69,24 @@ describe(`GET /api/offers?skip=10&limit=5`, () => {
 
     const hotels = response.body;
     assert.equal(hotels.length, LIMIT_COUNT);
+  });
+
+});
+
+describe(`POST /api/offers`, () => {
+  it(`send offers as json`, async () => {
+
+    const response = await request(app).
+    post(`/api/offers`).
+    send(testHotels).
+    set(`Accept`, `application/json`).
+    set(`Content-Type`, `application/json`).
+    expect(200).
+    expect(`Content-Type`, /json/);
+
+
+    const hotels = response.body;
+    assert.deepEqual(testHotels, hotels);
   });
 
 });

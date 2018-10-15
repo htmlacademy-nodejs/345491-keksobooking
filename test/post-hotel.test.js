@@ -1,17 +1,17 @@
 'use strict';
 
-const request = require(`supertest`);
+/* const request = require(`supertest`);
 const assert = require(`assert`);
 
 const liftServer = require(`../src/server`).liftServer;
 const testHotels = require(`../src/hotels/hotel-router.js`).hotels;
-const doPort = () => 2000 + Math.floor(Math.random() * 65000);
 
+const app = liftServer();
 
 describe(`POST /api/offers`, () => {
   it(`send offers as json`, async () => {
 
-    const response = await request(liftServer(doPort())).
+    const response = await request(app).
     post(`/api/offers`).
     send(testHotels).
     set(`Accept`, `application/json`).
@@ -24,5 +24,5 @@ describe(`POST /api/offers`, () => {
     assert.deepEqual(testHotels, hotels);
   });
 
-});
+});*/
 

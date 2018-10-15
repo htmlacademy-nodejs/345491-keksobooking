@@ -1,4 +1,5 @@
 'use strict';
+
 const assert = require(`assert`);
 const createRandom = require(`../utils/create-random.js`);
 
