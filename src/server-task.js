@@ -36,7 +36,7 @@ function getExpressInstance() {
   return app;
 }
 
-class ServerStartTask extends BaseTask {
+class ServerTask extends BaseTask {
   constructor() {
     super(currentTask, DESCRIPTION, MESSAGE);
   }
@@ -54,4 +54,4 @@ class ServerStartTask extends BaseTask {
 
 }
 
-module.exports = {getExpressInstance, ServerStartTask};
+module.exports = {getExpressInstance, ServerTask};
