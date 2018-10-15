@@ -3,18 +3,15 @@
 const request = require(`supertest`);
 const assert = require(`assert`);
 
-const liftServer = require(`../src/server`).liftServer;
+const getExpressInstance = require(`../src/server`).getExpressInstance;
 const testHotels = require(`../src/hotels/hotel-router.js`).hotels;
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
-const app = liftServer();
+
+const app = getExpressInstance();
 
 describe(`GET /api/offers`, () => {
-
-  afterEach(`stop server`, () => {
-    process.exit(0);
-  });
 
   it(`get all hotels`, async () => {
 
@@ -26,6 +23,7 @@ describe(`GET /api/offers`, () => {
 
     const hotels = response.body;
     assert.equal(hotels.length, HOTELS_COUNT);
+
   });
 
   it(`get data from unknown resource`, async () => {
@@ -41,19 +39,16 @@ describe(`GET /api/offers`, () => {
 
 describe(`GET /api/offers/:date`, () => {
 
-  afterEach(`stop server`, () => {
-    process.exit(0);
-  });
-
   it(`get first hotel date"`, async () => {
     const response = await request(app).
     get(`/api/offers/${testHotels[0].date}`).
     set(`Accept`, `application/json`).
     expect(200).
     expect(`Content-Type`, /json/);
-    const hotel = response.body;
 
+    const hotel = response.body;
     assert.strictEqual(hotel.date, testHotels[0].date);
+
   });
 
   it(`get unknown date"`, async () => {
@@ -67,10 +62,6 @@ describe(`GET /api/offers/:date`, () => {
 });
 
 describe(`GET /api/offers?skip=10&limit=5`, () => {
-
-  afterEach(`stop server`, () => {
-    process.exit(0);
-  });
 
   it(`get right hotels`, async () => {
 
@@ -89,10 +80,6 @@ describe(`GET /api/offers?skip=10&limit=5`, () => {
 });
 
 describe(`POST /api/offers`, () => {
-
-  afterEach(`stop server`, () => {
-    process.exit(0);
-  });
 
   it(`send offers as json`, async () => {
 

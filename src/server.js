@@ -21,7 +21,7 @@ const ERROR_HANDLER = (err, req, res, _next) => {
   }
 };
 
-function liftServer(validPort = PORT) {
+function getExpressInstance() {
 
   const app = express();
 
@@ -32,8 +32,6 @@ function liftServer(validPort = PORT) {
   app.use(NOT_FOUND_HANDLER);
 
   app.use(ERROR_HANDLER);
-
-  app.listen(validPort, () => console.log(`Сервер запущен: http://localhost:${validPort}`));
 
   return app;
 }
@@ -48,10 +46,12 @@ class ServerStartTask extends BaseTask {
 
     const validPort = ((typeof serverPort === `number`) && (serverPort >= 0) && (serverPort <= 65535)) ? serverPort : PORT;
 
-    liftServer(validPort);
+    const app = getExpressInstance();
+
+    app.listen(validPort, () => console.log(`Сервер запущен: http://localhost:${validPort}`));
 
   }
 
 }
 
-module.exports = {liftServer, ServerStartTask};
+module.exports = {getExpressInstance, ServerStartTask};
