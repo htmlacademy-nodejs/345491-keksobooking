@@ -11,6 +11,11 @@ const RANDOM_DATE = 12345;
 const app = liftServer();
 
 describe(`GET /api/offers`, () => {
+
+  afterEach(`stop server`, () => {
+    process.exit(0);
+  });
+
   it(`get all hotels`, async () => {
 
     const response = await request(app).
@@ -24,7 +29,7 @@ describe(`GET /api/offers`, () => {
   });
 
   it(`get data from unknown resource`, async () => {
-    return await request(app).
+    return request(app).
     get(`/api/coffee`).
     set(`Accept`, `application/json`).
     expect(404).
@@ -35,6 +40,11 @@ describe(`GET /api/offers`, () => {
 });
 
 describe(`GET /api/offers/:date`, () => {
+
+  afterEach(`stop server`, () => {
+    process.exit(0);
+  });
+
   it(`get first hotel date"`, async () => {
     const response = await request(app).
     get(`/api/offers/${testHotels[0].date}`).
@@ -47,7 +57,7 @@ describe(`GET /api/offers/:date`, () => {
   });
 
   it(`get unknown date"`, async () => {
-    return await request(app).
+    return request(app).
     get(`/api/offers/${RANDOM_DATE}`).
     set(`Accept`, `application/json`).
     expect(404).
@@ -57,12 +67,17 @@ describe(`GET /api/offers/:date`, () => {
 });
 
 describe(`GET /api/offers?skip=10&limit=5`, () => {
+
+  afterEach(`stop server`, () => {
+    process.exit(0);
+  });
+
   it(`get right hotels`, async () => {
 
     const LIMIT_COUNT = 5;
 
     const response = await request(app).
-    get(`/api/offers?skip=10&limit=5`).
+    get(`/api/offers?skip=10&limit=${LIMIT_COUNT}`).
     set(`Accept`, `application/json`).
     expect(200).
     expect(`Content-Type`, /json/);
@@ -74,6 +89,11 @@ describe(`GET /api/offers?skip=10&limit=5`, () => {
 });
 
 describe(`POST /api/offers`, () => {
+
+  afterEach(`stop server`, () => {
+    process.exit(0);
+  });
+
   it(`send offers as json`, async () => {
 
     const response = await request(app).
@@ -83,7 +103,6 @@ describe(`POST /api/offers`, () => {
     set(`Content-Type`, `application/json`).
     expect(200).
     expect(`Content-Type`, /json/);
-
 
     const hotels = response.body;
     assert.deepEqual(testHotels, hotels);

@@ -16,8 +16,8 @@ const parser = express.json();
 
 hotelRouter.get(``, (req, res) => {
 
-  let skipCount = parseInt(req.query.skip, 10);
-  let limitCount = parseInt(req.query.limit, 10);
+  const skipCount = parseInt(req.query.skip, 10);
+  const limitCount = parseInt(req.query.limit, 10);
 
   if ((typeof limitCount !== `number`) || (typeof skipCount !== `number`)) {
     throw new ArgumentError(`Неверный запрос.`, CODE_400);
