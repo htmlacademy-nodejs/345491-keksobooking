@@ -5,7 +5,6 @@ const hotelRouter = new express.Router();
 const generateElements = require(`../../utils/generate-elements`);
 const ArgumentError = require(`../../utils/errors`);
 const multer = require(`multer`);
-// const storage = multer.memoryStorage();
 const upload = multer({storage: multer.memoryStorage()});
 
 const CODE_400 = 400;
