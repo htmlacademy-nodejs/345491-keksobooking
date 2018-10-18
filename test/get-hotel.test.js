@@ -57,7 +57,8 @@ describe(`GET /api/offers/:date`, () => {
     set(`Accept`, `application/json`).
     expect(404).
     expect(`Предложение не найдено.`).
-    expect(`Content-Type`, /html/);
+    expect(`Content-Type`, /html/).
+    done;
   });
 });
 
@@ -95,39 +96,19 @@ describe(`POST /api/offers`, () => {
     assert.deepEqual(testHotels, hotels);
   });
 
-  it(`sends offer as multipart/form-data`, async () => {
-
-    const firstTitle = testHotels[0].offer.title;
+  it(`send hotel without title`, async () => {
 
     const response = await request(app).
     post(`/api/offers`).
-    field(`title`, firstTitle).
+    send([]).
     set(`Accept`, `application/json`).
-    set(`Content-Type`, `multipart/form-data`).
-    expect(200).
+    set(`Content-Type`, `application/json`).
+    expect(400).
     expect(`Content-Type`, /json/);
 
-    const hotel = response.body;
+    const error = response.body;
 
-    assert.deepEqual(firstTitle, hotel.title);
-  });
-
-  it(`sends offer with avatar as multipart/form-data`, async () => {
-
-    const firstTitle = testHotels[0].offer.title;
-
-    const response = await request(app).
-    post(`/api/offers`).
-    field(`title`, firstTitle).
-    attach(`avatar`, `${__dirname}/../static/img/avatars/user01.png`).
-    set(`Accept`, `application/json`).
-    set(`Content-Type`, `multipart/form-data`).
-    expect(200).
-    expect(`Content-Type`, /json/);
-
-    const offer = response.body;
-
-    assert.deepEqual(offer, {title: firstTitle, avatar: {flatName: `user01.png`}});
+    assert.deepEqual(error, [`Validation error - invalid input format`]);
   });
 
 });
