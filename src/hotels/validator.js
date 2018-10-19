@@ -1,11 +1,13 @@
 'use strict';
 
-const ValidateError = require(`../../utils/errors`).ValidateError;
+const ValidationError = require(`../../utils/errors`).ValidationError;
 
 const {START_PRICE, END_PRICE, TYPES, MIN_ROOM, MAX_ROOM, CHECK, FEATURES} = require(`../generate-entity`);
 
 const ADRESS_LIMIT = 100;
 const CODE_400 = 400;
+const LOW_LIMIT = 1;
+const UP_LIMIT = 140;
 
 let errors = [];
 
@@ -13,11 +15,10 @@ function validateHotel(hotel) {
 
   if ((!hotel.offer) || (!hotel.author)) {
     errors.push(`Validation error - invalid input format`);
-    console.log(`>1>>${errors.length}`);
-    throw new ValidateError(`Validation error - invalid input format`, errors, CODE_400);
+    throw new ValidationError(`Validation error - invalid input format`, errors, CODE_400);
   }
 
-  if ((!hotel.offer.title) || (typeof hotel.offer.title !== `string`) || (hotel.offer.title.length < 1) || (hotel.offer.title.length > 140)) {
+  if ((!hotel.offer.title) || (typeof hotel.offer.title !== `string`) || (hotel.offer.title.length < LOW_LIMIT) || (hotel.offer.title.length > UP_LIMIT)) {
     errors.push(`Field title is required and should be from 0 to 140 letters!`);
   }
 
@@ -57,7 +58,6 @@ function validateHotel(hotel) {
 }
 
 function validateHotels(hotels) {
-  console.log(`>2>>${errors.length}`);
 
   if (hotels.length > 0) {
     hotels.forEach((it) => validateHotel(it));
@@ -66,10 +66,8 @@ function validateHotels(hotels) {
   }
 
   if (errors.length > 0) {
-    throw new ValidateError(`Validation errors: ${errors.join()}`, errors, CODE_400);
+    throw new ValidationError(`Validation errors: ${errors.join()}`, errors, CODE_400);
   }
-
-  console.log(`>3>>${errors.length}`);
 
   return (errors.length > 0) ? errors.join() : hotels;
 }

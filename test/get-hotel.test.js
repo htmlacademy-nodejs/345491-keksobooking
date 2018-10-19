@@ -82,18 +82,19 @@ describe(`GET /api/offers?skip=10&limit=5`, () => {
 
 describe(`POST /api/offers`, () => {
 
-  it(`send offers as json`, async () => {
+  it(`send offers as json`, () => {
 
-    const response = await request(app).
+    return request(app).
     post(`/api/offers`).
     send(testHotels).
     set(`Accept`, `application/json`).
     set(`Content-Type`, `application/json`).
     expect(200).
-    expect(`Content-Type`, /json/);
-
-    const hotels = response.body;
-    assert.deepEqual(testHotels, hotels);
+    expect(`Content-Type`, /json/).
+    then((res) => {
+      const hotels = res.body;
+      assert.deepEqual(testHotels, hotels);
+    });
   });
 
   it(`send hotel without title`, async () => {

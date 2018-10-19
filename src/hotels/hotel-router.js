@@ -3,7 +3,7 @@
 const express = require(`express`);
 const generateElements = require(`../../utils/generate-elements`);
 const ArgumentError = require(`../../utils/errors`).ArgumentError;
-const ValidateError = require(`../../utils/errors`).ValidateError;
+const ValidationError = require(`../../utils/errors`).ValidationError;
 const multer = require(`multer`);
 const validateHotels = require(`./validator`);
 
@@ -56,20 +56,22 @@ hotelRouter.post(``, parser, hotelMedia, (req, res) => {
   const body = req.body;
   const files = req.files;
 
-  files[`avatar`][0].path = `${__dirname}/../../static/img/avatars/user01.png`;
-  files[`preview`][0].path = `${__dirname}/../../static/img/avatars/user02.png`;
+  // files[`avatar`][0].path = `${__dirname}/../../static/img/avatars/user01.png`;
+  // files[`preview`][0].path = `${__dirname}/../../static/img/avatars/user02.png`;
 
-  if (files[`avatar`][0]) {
-    body.author.avatar = `${files[`avatar`][0].path}`;
-    if ((files[`avatar`][0].mimetype !== `image/jpg`) || (files[`avatar`][0].mimetype !== `image/png`)) {
-      throw new ValidateError(`Validation error - invalid input format`, `invalid type of picture`, CODE_400);
+  if (files) {
+    if ((files[`avatar`][0])) {
+      body.author.avatar = `${files[`avatar`][0].path}`;
+      if ((files[`avatar`][0].mimetype !== `image/jpg`) || (files[`avatar`][0].mimetype !== `image/png`)) {
+        throw new ValidationError(`Validation error - invalid input format`, `invalid type of picture`, CODE_400);
+      }
     }
-  }
 
-  if (files[`preview`][0]) {
-    body.offer.preview = `${files[`preview`][0].path}`;
-    if ((files[`preview`][0].mimetype !== `image/jpg`) || (files[`preview`][0].mimetype !== `image/png`)) {
-      throw new ValidateError(`Validation error - invalid input format`, `invalid type of picture`, CODE_400);
+    if ((files[`preview`][0])) {
+      body.offer.preview = `${files[`preview`][0].path}`;
+      if ((files[`preview`][0].mimetype !== `image/jpg`) || (files[`preview`][0].mimetype !== `image/png`)) {
+        throw new ValidationError(`Validation error - invalid input format`, `invalid type of picture`, CODE_400);
+      }
     }
   }
 
@@ -78,7 +80,7 @@ hotelRouter.post(``, parser, hotelMedia, (req, res) => {
 });
 
 hotelRouter.use((err, req, res, _next) => {
-  if (err instanceof ValidateError) {
+  if (err instanceof ValidationError) {
     console.error(err);
     res.status(err.code).json(err.errors);
   }

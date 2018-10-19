@@ -7,7 +7,7 @@ class ArgumentError extends Error {
   }
 }
 
-class ValidateError extends Error {
+class ValidationError extends Error {
   constructor(message, errors, code) {
     super(message);
     this.code = code;
@@ -15,4 +15,4 @@ class ValidateError extends Error {
   }
 }
 
-module.exports = {ValidateError, ArgumentError};
+module.exports = {ValidationError, ArgumentError};

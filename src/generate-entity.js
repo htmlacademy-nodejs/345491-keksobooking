@@ -46,7 +46,7 @@ function generateEntity() {
       }),
       "description": ``,
       "photos": PHOTOS.sort((a, b) => createRandom(a.length) - createRandom(b.length)),
-      "preview": ``
+      "preview": `${__dirname}/../static/img/avatars/user01.png`
     },
 
     "location": {
