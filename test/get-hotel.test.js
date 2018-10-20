@@ -5,9 +5,44 @@ const assert = require(`assert`);
 
 const getExpressInstance = require(`../src/server-task`).getExpressInstance;
 const testHotels = require(`../src/hotels/hotel-router`).hotels;
+const {generateEntity} = require(`../src/generate-entity`);
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
+const START_PRICE = 1;
+const END_PRICE = 100000;
+const MIN_ROOM = 0;
+const MAX_ROOM = 1000;
+const ONE_HOTEL = generateEntity();
+const ALL_ERRORS = [`Field title is required and should be from 0 to 140 letters!`, `Field hotel is required and should be one of four types!`, `Field price is required and should be from ${START_PRICE} to ${END_PRICE} $!`, `Field address is required and should be less than 101 letters!`, `Field checkin is required!`, `Field checkout is required!`, `Field rooms is required and should be from ${MIN_ROOM} to ${MAX_ROOM}!`, `Field features should belong to initial values!`, `Field name should be text!`];
+
+const WRONG_HOTEL = {
+  "author": {
+    "name": 111,
+    "avatar": ``
+  },
+
+  "offer": {
+    "title": 111,
+    "address": 111,
+    "price": `aaa`,
+    "type": 111,
+    "rooms": `aaa`,
+    "guests": `aaa`,
+    "checkin": `aaa`,
+    "checkout": `aaa`,
+    "features": `aaa`,
+    "description": 111,
+    "photos": `aaa`,
+    "preview": ``
+  },
+
+  "location": {
+    "x": `aaa`,
+    "y": `aaa`
+  },
+  "date": `aaa`
+};
 
 const app = getExpressInstance();
 
@@ -81,53 +116,34 @@ describe(`GET /api/offers?skip=10&limit=5`, () => {
 
 describe(`POST /api/offers`, () => {
 
-  it(`send offers as json`, async () => {
+  it(`send offers as json`, () => {
 
-    const response = await request(app).
+    return request(app).
     post(`/api/offers`).
-    send(testHotels).
+    send(ONE_HOTEL).
     set(`Accept`, `application/json`).
     set(`Content-Type`, `application/json`).
     expect(200).
-    expect(`Content-Type`, /json/);
-
-    const hotels = response.body;
-    assert.deepEqual(testHotels, hotels);
+    expect(`Content-Type`, /json/).
+    then((res) => {
+      const hotels = res.body;
+      assert.deepEqual(ONE_HOTEL, hotels);
+    });
   });
 
-  it(`sends offer as multipart/form-data`, async () => {
-
-    const firstTitle = testHotels[0].offer.title;
+  it(`send wrong hotel`, async () => {
 
     const response = await request(app).
     post(`/api/offers`).
-    field(`title`, firstTitle).
+    send(WRONG_HOTEL).
     set(`Accept`, `application/json`).
-    set(`Content-Type`, `multipart/form-data`).
-    expect(200).
+    set(`Content-Type`, `application/json`).
+    expect(400).
     expect(`Content-Type`, /json/);
 
-    const hotel = response.body;
+    const errors = response.body;
 
-    assert.deepEqual(firstTitle, hotel.title);
-  });
-
-  it(`sends offer with avatar as multipart/form-data`, async () => {
-
-    const firstTitle = testHotels[0].offer.title;
-
-    const response = await request(app).
-    post(`/api/offers`).
-    field(`title`, firstTitle).
-    attach(`avatar`, `${__dirname}/../static/img/avatars/user01.png`).
-    set(`Accept`, `application/json`).
-    set(`Content-Type`, `multipart/form-data`).
-    expect(200).
-    expect(`Content-Type`, /json/);
-
-    const offer = response.body;
-
-    assert.deepEqual(offer, {title: firstTitle, avatar: {flatName: `user01.png`}});
+    assert.deepEqual(errors, ALL_ERRORS);
   });
 
 });

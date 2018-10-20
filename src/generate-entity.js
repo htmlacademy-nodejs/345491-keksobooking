@@ -6,16 +6,17 @@ const TYPES = [`flat`, `palace`, `house`, `bungalo`];
 const CHECK = [`12:00`, `13:00`, `14:00`];
 const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
-const START_PRICE = 1000;
-const END_PRICE = 1000000;
-const MIN_ROOM = 1;
-const MAX_ROOM = 5;
+const START_PRICE = 1;
+const END_PRICE = 100000;
+const MIN_ROOM = 0;
+const MAX_ROOM = 1000;
 const MAX_GUESTS = 100;
 const START_X = 300;
 const START_Y = 150;
 const END_X = 900;
 const END_Y = 500;
 const SEVEN_DAYS = 7;
+const NAMES = [`Keks`, `Pavel`, `Nikolay`, `Alex`, `Ulyana`, `Anastasyia`, `Julia`];
 
 function generateEntity() {
 
@@ -26,6 +27,7 @@ function generateEntity() {
 
   return {
     "author": {
+      "name": NAMES[createRandom(NAMES.length - 1)],
       "avatar": `https://robohash.org/bender`
     },
 
@@ -43,7 +45,8 @@ function generateEntity() {
         return rand % ind === 0;
       }),
       "description": ``,
-      "photos": PHOTOS.sort((a, b) => createRandom(a.length) - createRandom(b.length))
+      "photos": PHOTOS.sort((a, b) => createRandom(a.length) - createRandom(b.length)),
+      "preview": `${__dirname}/../static/img/avatars/user01.png`
     },
 
     "location": {

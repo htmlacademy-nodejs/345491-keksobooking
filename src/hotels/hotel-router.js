@@ -1,17 +1,18 @@
 'use strict';
 
 const express = require(`express`);
-const hotelRouter = new express.Router();
 const generateElements = require(`../../utils/generate-elements`);
-const ArgumentError = require(`../../utils/errors`);
+const ArgumentError = require(`../../utils/errors`).ArgumentError;
+const ValidationError = require(`../../utils/errors`).ValidationError;
 const multer = require(`multer`);
-const upload = multer({storage: multer.memoryStorage()});
+const validateHotel = require(`./validator`);
 
 const CODE_400 = 400;
-const CODE_404 = 404;
 const SKIP_COUNT = 0;
 const LIMIT_COUNT = 20;
 
+const hotelRouter = new express.Router();
+const upload = multer({storage: multer.memoryStorage()});
 const hotels = generateElements(LIMIT_COUNT);
 const parser = express.json();
 
@@ -32,32 +33,51 @@ hotelRouter.get(``, (req, res) => {
 hotelRouter.get(`/:date`, (req, res) => {
 
   const offerDate = parseInt(req.params.date, 10);
-  console.log(typeof offerDate);
 
   if (!offerDate || (typeof offerDate !== `number`)) {
-    throw new ArgumentError(`Неверный запрос.`, CODE_400);
+    res.status(400).send(`Неверный запрос.`);
   }
 
   const found = hotels.find((it) => it.date === offerDate);
 
   if (!found) {
-    throw new ArgumentError(`Предложение не найдено.`, CODE_404);
+    res.status(404).send(`Предложение не найдено.`);
   }
 
   res.send(found);
 });
 
-hotelRouter.post(``, parser, upload.single(`avatar`), (req, res) => {
+const hotelMedia = upload.fields([{name: `avatar`, maxCount: 1}, {name: `preview`, maxCount: 1}]);
+
+hotelRouter.post(``, parser, hotelMedia, (req, res) => {
 
   const body = req.body;
-  const avatar = req.file;
+  const files = req.files;
 
-  if (avatar) {
-    body.avatar = {flatName: avatar.originalname};
+  if (files) {
+    if ((files[`avatar`][0])) {
+      body.author.avatar = `${files[`avatar`][0].path}`;
+      if ((files[`avatar`][0].mimetype !== `image/jpg`) || (files[`avatar`][0].mimetype !== `image/png`)) {
+        throw new ValidationError(`Validation error - invalid input format`, `invalid type of picture`, CODE_400);
+      }
+    }
+
+    if ((files[`preview`][0])) {
+      body.offer.preview = `${files[`preview`][0].path}`;
+      if ((files[`preview`][0].mimetype !== `image/jpg`) || (files[`preview`][0].mimetype !== `image/png`)) {
+        throw new ValidationError(`Validation error - invalid input format`, `invalid type of picture`, CODE_400);
+      }
+    }
   }
 
-  res.send(body);
+  res.send(validateHotel(body));
 
+});
+
+hotelRouter.use((err, req, res, _next) => {
+  if (err instanceof ValidationError) {
+    res.status(err.code).json(err.errors);
+  }
 });
 
 module.exports = {hotelRouter, hotels};
