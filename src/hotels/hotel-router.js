@@ -76,7 +76,6 @@ hotelRouter.post(``, parser, hotelMedia, (req, res) => {
 
 hotelRouter.use((err, req, res, _next) => {
   if (err instanceof ValidationError) {
-    console.error(err);
     res.status(err.code).json(err.errors);
   }
 });

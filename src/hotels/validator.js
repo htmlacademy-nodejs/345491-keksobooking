@@ -9,20 +9,19 @@ const CODE_400 = 400;
 const LOW_LIMIT = 1;
 const UP_LIMIT = 140;
 
-let errors = [];
-
 function validateHotel(hotel) {
+  const errors = [];
 
   if ((!hotel.offer) || (!hotel.author)) {
     errors.push(`Validation error - invalid input format`);
-    throw new ValidationError(`Validation error - invalid input format`, errors, CODE_400);
+    throw new ValidationError(`Validation error`, errors, CODE_400);
   }
 
   if ((!hotel.offer.title) || (typeof hotel.offer.title !== `string`) || (hotel.offer.title.length < LOW_LIMIT) || (hotel.offer.title.length > UP_LIMIT)) {
     errors.push(`Field title is required and should be from 0 to 140 letters!`);
   }
 
-  if ((!hotel.offer.title) || (TYPES.indexOf(hotel.offer.type) === -1)) {
+  if ((!hotel.offer.type) || (TYPES.indexOf(hotel.offer.type) === -1)) {
     errors.push(`Field hotel is required and should be one of four types!`);
   }
 
@@ -46,12 +45,16 @@ function validateHotel(hotel) {
     errors.push(`Field rooms is required and should be from ${MIN_ROOM} to ${MAX_ROOM}!`);
   }
 
-  if (!(hotel.offer.features.every((it) => FEATURES.indexOf(it) !== -1)) || !(hotel.offer.features.every((it, ind, arr) => arr.indexOf(it) === ind))) {
+  if ((!Array.isArray(hotel.offer.features)) || !(hotel.offer.features.every((it) => FEATURES.indexOf(it) !== -1)) || !(hotel.offer.features.every((it, ind, arr) => arr.indexOf(it) === ind))) {
     errors.push(`Field features should belong to initial values!`);
   }
 
   if (typeof hotel.author.name !== `string`) {
     errors.push(`Field name should be text!`);
+  }
+
+  if (errors.length > 0) {
+    throw new ValidationError(`Validation error`, errors, CODE_400);
   }
 
   return hotel;

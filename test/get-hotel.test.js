@@ -9,7 +9,40 @@ const {generateEntity} = require(`../src/generate-entity`);
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
+const START_PRICE = 1;
+const END_PRICE = 100000;
+const MIN_ROOM = 0;
+const MAX_ROOM = 1000;
 const ONE_HOTEL = generateEntity();
+const ALL_ERRORS = [`Field title is required and should be from 0 to 140 letters!`, `Field hotel is required and should be one of four types!`, `Field price is required and should be from ${START_PRICE} to ${END_PRICE} $!`, `Field address is required and should be less than 101 letters!`, `Field checkin is required!`, `Field checkout is required!`, `Field rooms is required and should be from ${MIN_ROOM} to ${MAX_ROOM}!`, `Field features should belong to initial values!`, `Field name should be text!`];
+
+const WRONG_HOTEL = {
+  "author": {
+    "name": 111,
+    "avatar": ``
+  },
+
+  "offer": {
+    "title": 111,
+    "address": 111,
+    "price": `aaa`,
+    "type": 111,
+    "rooms": `aaa`,
+    "guests": `aaa`,
+    "checkin": `aaa`,
+    "checkout": `aaa`,
+    "features": `aaa`,
+    "description": 111,
+    "photos": `aaa`,
+    "preview": ``
+  },
+
+  "location": {
+    "x": `aaa`,
+    "y": `aaa`
+  },
+  "date": `aaa`
+};
 
 const app = getExpressInstance();
 
@@ -98,19 +131,19 @@ describe(`POST /api/offers`, () => {
     });
   });
 
-  it(`send hotel without title`, async () => {
+  it(`send wrong hotel`, async () => {
 
     const response = await request(app).
     post(`/api/offers`).
-    send({}).
+    send(WRONG_HOTEL).
     set(`Accept`, `application/json`).
     set(`Content-Type`, `application/json`).
     expect(400).
     expect(`Content-Type`, /json/);
 
-    const error = response.body;
+    const errors = response.body;
 
-    assert.deepEqual(error, [`Validation error - invalid input format`]);
+    assert.deepEqual(errors, ALL_ERRORS);
   });
 
 });
