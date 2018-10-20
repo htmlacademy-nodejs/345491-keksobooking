@@ -5,9 +5,11 @@ const assert = require(`assert`);
 
 const getExpressInstance = require(`../src/server-task`).getExpressInstance;
 const testHotels = require(`../src/hotels/hotel-router`).hotels;
+const {generateEntity} = require(`../src/generate-entity`);
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
+const ONE_HOTEL = generateEntity();
 
 const app = getExpressInstance();
 
@@ -57,8 +59,7 @@ describe(`GET /api/offers/:date`, () => {
     set(`Accept`, `application/json`).
     expect(404).
     expect(`Предложение не найдено.`).
-    expect(`Content-Type`, /html/).
-    done;
+    expect(`Content-Type`, /html/);
   });
 });
 
@@ -86,14 +87,14 @@ describe(`POST /api/offers`, () => {
 
     return request(app).
     post(`/api/offers`).
-    send(testHotels).
+    send(ONE_HOTEL).
     set(`Accept`, `application/json`).
     set(`Content-Type`, `application/json`).
     expect(200).
     expect(`Content-Type`, /json/).
     then((res) => {
       const hotels = res.body;
-      assert.deepEqual(testHotels, hotels);
+      assert.deepEqual(ONE_HOTEL, hotels);
     });
   });
 
@@ -101,7 +102,7 @@ describe(`POST /api/offers`, () => {
 
     const response = await request(app).
     post(`/api/offers`).
-    send([]).
+    send({}).
     set(`Accept`, `application/json`).
     set(`Content-Type`, `application/json`).
     expect(400).

@@ -5,10 +5,9 @@ const generateElements = require(`../../utils/generate-elements`);
 const ArgumentError = require(`../../utils/errors`).ArgumentError;
 const ValidationError = require(`../../utils/errors`).ValidationError;
 const multer = require(`multer`);
-const validateHotels = require(`./validator`);
+const validateHotel = require(`./validator`);
 
 const CODE_400 = 400;
-const CODE_404 = 404;
 const SKIP_COUNT = 0;
 const LIMIT_COUNT = 20;
 
@@ -34,16 +33,15 @@ hotelRouter.get(``, (req, res) => {
 hotelRouter.get(`/:date`, (req, res) => {
 
   const offerDate = parseInt(req.params.date, 10);
-  console.log(typeof offerDate);
 
   if (!offerDate || (typeof offerDate !== `number`)) {
-    throw new ArgumentError(`Неверный запрос.`, CODE_400);
+    res.status(400).send(`Неверный запрос.`);
   }
 
   const found = hotels.find((it) => it.date === offerDate);
 
   if (!found) {
-    throw new ArgumentError(`Предложение не найдено.`, CODE_404);
+    res.status(404).send(`Предложение не найдено.`);
   }
 
   res.send(found);
@@ -55,9 +53,6 @@ hotelRouter.post(``, parser, hotelMedia, (req, res) => {
 
   const body = req.body;
   const files = req.files;
-
-  // files[`avatar`][0].path = `${__dirname}/../../static/img/avatars/user01.png`;
-  // files[`preview`][0].path = `${__dirname}/../../static/img/avatars/user02.png`;
 
   if (files) {
     if ((files[`avatar`][0])) {
@@ -75,7 +70,7 @@ hotelRouter.post(``, parser, hotelMedia, (req, res) => {
     }
   }
 
-  res.send(validateHotels(body));
+  res.send(validateHotel(body));
 
 });
 

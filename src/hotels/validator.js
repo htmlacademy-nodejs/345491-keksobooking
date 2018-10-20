@@ -57,19 +57,4 @@ function validateHotel(hotel) {
   return hotel;
 }
 
-function validateHotels(hotels) {
-
-  if (hotels.length > 0) {
-    hotels.forEach((it) => validateHotel(it));
-  } else {
-    validateHotel(hotels);
-  }
-
-  if (errors.length > 0) {
-    throw new ValidationError(`Validation errors: ${errors.join()}`, errors, CODE_400);
-  }
-
-  return (errors.length > 0) ? errors.join() : hotels;
-}
-
-module.exports = validateHotels;
+module.exports = validateHotel;
