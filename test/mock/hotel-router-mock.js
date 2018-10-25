@@ -1,14 +1,15 @@
 'use strict';
 
 const express = require(`express`);
-// const generateElements = require(`../../utils/generate-elements`);
+const generateElements = require(`../../utils/generate-elements`);
 const ArgumentError = require(`../../utils/errors`).ArgumentError;
 const multer = require(`multer`);
-const validateHotel = require(`./validator`);
-const offerStore = require(`../../db/offer-store`);
-const imageStore = require(`../../db/image-store`);
+const validateHotel = require(`../../src/hotels/validator`);
+const offerStoreMock = require(`./offer-store-mock`);
+const imageStoreMock = require(`./image-store-mock`);
 const toStream = require(`buffer-to-stream`);
 const ValidationError = require(`../../utils/errors`).ValidationError;
+// const MongoError = require(`mongodb`).MongoError;
 
 const CODE_400 = 400;
 const SKIP_COUNT = 0;
@@ -16,7 +17,7 @@ const LIMIT_COUNT = 20;
 
 const hotelRouter = new express.Router();
 const upload = multer({storage: multer.memoryStorage()});
-// const hotels = generateElements(LIMIT_COUNT);
+const hotels = generateElements(LIMIT_COUNT);
 const parser = express.json();
 
 const asyncMiddleware = (fn) => (req, res, next) => fn(req, res, next).catch(next);
@@ -40,7 +41,7 @@ hotelRouter.get(``, asyncMiddleware(async (req, res) => {
     throw new ArgumentError(`Неверный запрос.`, CODE_400);
   }
 
-  res.send(await doSkip(await offerStore.getAllHotels(), skipCount, limitCount));
+  res.send(await doSkip(await offerStoreMock.getAllHotels(), skipCount, limitCount));
 }));
 
 hotelRouter.get(`/:date`, asyncMiddleware(async (req, res) => {
@@ -51,7 +52,7 @@ hotelRouter.get(`/:date`, asyncMiddleware(async (req, res) => {
     res.status(400).send(`Неверный запрос.`);
   }
 
-  const found = await offerStore.getHotelByDate(offerDate);
+  const found = await offerStoreMock.getHotelByDateMock(offerDate);
 
   if (!found) {
     res.status(404).send(`Предложение не найдено.`);
@@ -84,11 +85,11 @@ hotelRouter.post(``, parser, hotelMedia, asyncMiddleware(async (req, res) => {
   }
 
   const validated = validateHotel(body);
-  const result = await offerStore.save(validated);
+  const result = await offerStoreMock.save(validated);
   const insertedId = result.insertedId;
 
-  if (files[`avatar`][0]) {
-    await imageStore.save(insertedId, toStream(files[`avatar`][0].buffer));
+  if ((files) && (files[`avatar`][0])) {
+    await imageStoreMock.save(insertedId, toStream(files[`avatar`][0].buffer));
   }
 
   res.send(validated);
@@ -102,14 +103,13 @@ hotelRouter.get(`/:date/avatar`, asyncMiddleware(async (req, res) => {
     res.status(400).send(`Неверный запрос.`);
   }
 
-  // const validDate = offerDate;
-  const found = await offerStore.getHotelByDate(offerDate);
+  const found = await offerStoreMock.getHotelByDate(offerDate);
 
   if (!found) {
     res.status(400).send(`Предложение не найдено.`);
   }
 
-  const result = await imageStore.get(found._id);
+  const result = await imageStoreMock.get(found._id);
   if (!result) {
     res.status(404).send(`Аватар не найден.`);
   }
@@ -124,8 +124,8 @@ hotelRouter.get(`/:date/avatar`, asyncMiddleware(async (req, res) => {
   stream.on(`end`, () => res.end());
   stream.pipe(res);
 }));
-
-/* hotelRouter.use((req, res) => {
+/*
+hotelRouter.use((req, res) => {
   res.status(404).send(`Page was not found`);
 });
 
@@ -143,4 +143,4 @@ hotelRouter.use((err, req, res, _next) => {
   }
 });*/
 
-module.exports = {hotelRouter};
+module.exports = {hotelRouter, hotels};
