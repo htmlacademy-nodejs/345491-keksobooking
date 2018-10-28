@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require(`express`);
-// const generateElements = require(`../../utils/generate-elements`);
 const ArgumentError = require(`../../utils/errors`).ArgumentError;
 const multer = require(`multer`);
 const validateHotel = require(`./validator`);
@@ -16,7 +15,6 @@ const LIMIT_COUNT = 20;
 
 const hotelRouter = new express.Router();
 const upload = multer({storage: multer.memoryStorage()});
-// const hotels = generateElements(LIMIT_COUNT);
 const parser = express.json();
 
 const asyncMiddleware = (fn) => (req, res, next) => fn(req, res, next).catch(next);
@@ -102,7 +100,6 @@ hotelRouter.get(`/:date/avatar`, asyncMiddleware(async (req, res) => {
     res.status(400).send(`Неверный запрос.`);
   }
 
-  // const validDate = offerDate;
   const found = await offerStore.getHotelByDate(offerDate);
 
   if (!found) {
@@ -124,23 +121,5 @@ hotelRouter.get(`/:date/avatar`, asyncMiddleware(async (req, res) => {
   stream.on(`end`, () => res.end());
   stream.pipe(res);
 }));
-
-/* hotelRouter.use((req, res) => {
-  res.status(404).send(`Page was not found`);
-});
-
-hotelRouter.use((err, req, res, _next) => {
-  if (err) {
-    console.error(err);
-    if (err instanceof ValidationError) {
-      res.status(err.code).json(err.errors);
-      return;
-    } else if (err instanceof MongoError) {
-      res.status(400).json(err.message);
-      return;
-    }
-    res.status(err.code || 500).send(err.message);
-  }
-});*/
 
 module.exports = {hotelRouter};

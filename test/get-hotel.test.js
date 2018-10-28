@@ -6,7 +6,7 @@ const assert = require(`assert`);
 const {generateEntity} = require(`../src/generate-entity`);
 const hotelRouterMock = require(`./mock/hotel-router-mock`).hotelRouter;
 const OfferStoreMock = require(`./mock/offer-store-mock`);
-const getExpressInstance = require(`../src/server-task`).getExpressInstance;
+const getExpressInstanceMock = require(`../src/create-server`);
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
@@ -45,7 +45,7 @@ const WRONG_HOTEL = {
   "date": `aaa`
 };
 
-const app = getExpressInstance(hotelRouterMock);
+const app = getExpressInstanceMock(hotelRouterMock);
 
 describe(`GET /api/offers`, () => {
 
@@ -58,7 +58,6 @@ describe(`GET /api/offers`, () => {
     expect(`Content-Type`, /json/);
 
     const hotels = response.body;
-    console.log(hotels);
 
     assert.equal(hotels.total, HOTELS_COUNT);
 

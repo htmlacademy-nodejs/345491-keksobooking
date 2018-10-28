@@ -9,7 +9,6 @@ const offerStoreMock = require(`./offer-store-mock`);
 const imageStoreMock = require(`./image-store-mock`);
 const toStream = require(`buffer-to-stream`);
 const ValidationError = require(`../../utils/errors`).ValidationError;
-// const MongoError = require(`mongodb`).MongoError;
 
 const CODE_400 = 400;
 const SKIP_COUNT = 0;
@@ -124,23 +123,5 @@ hotelRouter.get(`/:date/avatar`, asyncMiddleware(async (req, res) => {
   stream.on(`end`, () => res.end());
   stream.pipe(res);
 }));
-/*
-hotelRouter.use((req, res) => {
-  res.status(404).send(`Page was not found`);
-});
-
-hotelRouter.use((err, req, res, _next) => {
-  if (err) {
-    console.error(err);
-    if (err instanceof ValidationError) {
-      res.status(err.code).json(err.errors);
-      return;
-    } else if (err instanceof MongoError) {
-      res.status(400).json(err.message);
-      return;
-    }
-    res.status(err.code || 500).send(err.message);
-  }
-});*/
 
 module.exports = {hotelRouter, hotels};
