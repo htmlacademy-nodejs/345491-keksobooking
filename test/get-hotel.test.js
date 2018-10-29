@@ -6,7 +6,7 @@ const assert = require(`assert`);
 const {generateEntity} = require(`../src/generate-entity`);
 const offerStoreMock = require(`./mock/offer-store-mock`);
 const imageStoreMock = require(`./mock/image-store-mock`);
-const hotelRouterMock = require(`../src/hotels/hotel-router`);
+const getHotelRouterMock = require(`../src/hotels/hotel-router`);
 const OfferStoreMock = require(`./mock/offer-store-mock`);
 const getExpressInstanceMock = require(`../src/create-server`);
 
@@ -47,7 +47,7 @@ const WRONG_HOTEL = {
   "date": `aaa`
 };
 
-const app = getExpressInstanceMock(hotelRouterMock(offerStoreMock, imageStoreMock));
+const app = getExpressInstanceMock(getHotelRouterMock(offerStoreMock, imageStoreMock));
 
 describe(`GET /api/offers`, () => {
 
