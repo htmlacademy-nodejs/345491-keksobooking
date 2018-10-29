@@ -10,7 +10,7 @@ class OfferStoreMock {
     this.data = data;
   }
 
-  async getHotelByDateMock(date) {
+  async getHotelByDate(date) {
     return this.data.find((it) => it.date === date);
   }
 

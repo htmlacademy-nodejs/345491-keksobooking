@@ -4,11 +4,11 @@ const express = require(`express`);
 const MongoError = require(`mongodb`).MongoError;
 const ValidationError = require(`../utils/errors`).ValidationError;
 
-const NOT_FOUND_HANDLER = (req, res) => {
+const handleNotFound = (req, res) => {
   res.status(404).send(`Page was not found`);
 };
 
-const ERROR_HANDLER = (err, req, res, _next) => {
+const handleError = (err, req, res, _next) => {
   if (err) {
     console.error(err);
     if (err instanceof ValidationError) {
@@ -30,9 +30,9 @@ function getExpressInstance(inst) {
 
   app.use(`/api/offers`, inst);
 
-  app.use(NOT_FOUND_HANDLER);
+  app.use(handleNotFound);
 
-  app.use(ERROR_HANDLER);
+  app.use(handleError);
 
   return app;
 }

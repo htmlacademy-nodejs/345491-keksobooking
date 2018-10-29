@@ -4,8 +4,6 @@ const express = require(`express`);
 const ArgumentError = require(`../../utils/errors`).ArgumentError;
 const multer = require(`multer`);
 const validateHotel = require(`./validator`);
-const offerStore = require(`../../db/offer-store`);
-const imageStore = require(`../../db/image-store`);
 const toStream = require(`buffer-to-stream`);
 const ValidationError = require(`../../utils/errors`).ValidationError;
 
@@ -38,7 +36,7 @@ hotelRouter.get(``, asyncMiddleware(async (req, res) => {
     throw new ArgumentError(`Неверный запрос.`, CODE_400);
   }
 
-  res.send(await doSkip(await offerStore.getAllHotels(), skipCount, limitCount));
+  res.send(await doSkip(await hotelRouter.offerStore.getAllHotels(), skipCount, limitCount));
 }));
 
 hotelRouter.get(`/:date`, asyncMiddleware(async (req, res) => {
@@ -49,7 +47,7 @@ hotelRouter.get(`/:date`, asyncMiddleware(async (req, res) => {
     res.status(400).send(`Неверный запрос.`);
   }
 
-  const found = await offerStore.getHotelByDate(offerDate);
+  const found = await hotelRouter.offerStore.getHotelByDate(offerDate);
 
   if (!found) {
     res.status(404).send(`Предложение не найдено.`);
@@ -82,11 +80,11 @@ hotelRouter.post(``, parser, hotelMedia, asyncMiddleware(async (req, res) => {
   }
 
   const validated = validateHotel(body);
-  const result = await offerStore.save(validated);
+  const result = await hotelRouter.offerStore.save(validated);
   const insertedId = result.insertedId;
 
-  if (files[`avatar`][0]) {
-    await imageStore.save(insertedId, toStream(files[`avatar`][0].buffer));
+  if ((files) && (files[`avatar`][0])) {
+    await hotelRouter.imageStore.save(insertedId, toStream(files[`avatar`][0].buffer));
   }
 
   res.send(validated);
@@ -100,20 +98,19 @@ hotelRouter.get(`/:date/avatar`, asyncMiddleware(async (req, res) => {
     res.status(400).send(`Неверный запрос.`);
   }
 
-  const found = await offerStore.getHotelByDate(offerDate);
+  const found = await hotelRouter.offerStore.getHotelByDate(offerDate);
 
   if (!found) {
     res.status(400).send(`Предложение не найдено.`);
   }
 
-  const result = await imageStore.get(found._id);
+  const result = await hotelRouter.imageStore.get(found._id);
   if (!result) {
     res.status(404).send(`Аватар не найден.`);
   }
 
   res.header(`Content-Type`, `image/jpg`);
   res.header(`Content-Length`, result.info.length);
-
   res.on(`error`, (e) => console.error(e));
   res.on(`end`, () => res.end());
   const stream = result.stream;
@@ -122,4 +119,8 @@ hotelRouter.get(`/:date/avatar`, asyncMiddleware(async (req, res) => {
   stream.pipe(res);
 }));
 
-module.exports = {hotelRouter};
+module.exports = (offerStore, imageStore) => {
+  hotelRouter.offerStore = offerStore;
+  hotelRouter.imageStore = imageStore;
+  return hotelRouter;
+};

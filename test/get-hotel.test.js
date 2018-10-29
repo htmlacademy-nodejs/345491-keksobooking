@@ -4,7 +4,10 @@ const request = require(`supertest`);
 const assert = require(`assert`);
 
 const {generateEntity} = require(`../src/generate-entity`);
-const hotelRouterMock = require(`./mock/hotel-router-mock`).hotelRouter;
+// const hotelRouterMock = require(`./mock/hotel-router-mock`).hotelRouter;
+const offerStoreMock = require(`./mock/offer-store-mock`);
+const imageStoreMock = require(`./mock/image-store-mock`);
+const hotelRouterMock = require(`../src/hotels/hotel-router`)(offerStoreMock, imageStoreMock);
 const OfferStoreMock = require(`./mock/offer-store-mock`);
 const getExpressInstanceMock = require(`../src/create-server`);
 
