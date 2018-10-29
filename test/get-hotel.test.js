@@ -3,9 +3,12 @@
 const request = require(`supertest`);
 const assert = require(`assert`);
 
-const getExpressInstance = require(`../src/server-task`).getExpressInstance;
-const testHotels = require(`../src/hotels/hotel-router`).hotels;
 const {generateEntity} = require(`../src/generate-entity`);
+const offerStoreMock = require(`./mock/offer-store-mock`);
+const imageStoreMock = require(`./mock/image-store-mock`);
+const getHotelRouterMock = require(`../src/hotels/hotel-router`);
+const OfferStoreMock = require(`./mock/offer-store-mock`);
+const getExpressInstanceMock = require(`../src/create-server`);
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
@@ -44,7 +47,7 @@ const WRONG_HOTEL = {
   "date": `aaa`
 };
 
-const app = getExpressInstance();
+const app = getExpressInstanceMock(getHotelRouterMock(offerStoreMock, imageStoreMock));
 
 describe(`GET /api/offers`, () => {
 
@@ -57,7 +60,8 @@ describe(`GET /api/offers`, () => {
     expect(`Content-Type`, /json/);
 
     const hotels = response.body;
-    assert.equal(hotels.length, HOTELS_COUNT);
+
+    assert.equal(hotels.total, HOTELS_COUNT);
 
   });
 
@@ -76,13 +80,13 @@ describe(`GET /api/offers/:date`, () => {
 
   it(`get first hotel date"`, async () => {
     const response = await request(app).
-    get(`/api/offers/${testHotels[0].date}`).
+    get(`/api/offers/${OfferStoreMock.data[0].date}`).
     set(`Accept`, `application/json`).
     expect(200).
     expect(`Content-Type`, /json/);
 
     const hotel = response.body;
-    assert.strictEqual(hotel.date, testHotels[0].date);
+    assert.strictEqual(hotel.date, OfferStoreMock.data[0].date);
 
   });
 
@@ -109,7 +113,8 @@ describe(`GET /api/offers?skip=10&limit=5`, () => {
     expect(`Content-Type`, /json/);
 
     const hotels = response.body;
-    assert.equal(hotels.length, LIMIT_COUNT);
+
+    assert.equal(hotels.data.length, LIMIT_COUNT);
   });
 
 });
@@ -127,6 +132,7 @@ describe(`POST /api/offers`, () => {
     expect(`Content-Type`, /json/).
     then((res) => {
       const hotels = res.body;
+
       assert.deepEqual(ONE_HOTEL, hotels);
     });
   });
