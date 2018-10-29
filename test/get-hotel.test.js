@@ -4,10 +4,9 @@ const request = require(`supertest`);
 const assert = require(`assert`);
 
 const {generateEntity} = require(`../src/generate-entity`);
-// const hotelRouterMock = require(`./mock/hotel-router-mock`).hotelRouter;
 const offerStoreMock = require(`./mock/offer-store-mock`);
 const imageStoreMock = require(`./mock/image-store-mock`);
-const hotelRouterMock = require(`../src/hotels/hotel-router`)(offerStoreMock, imageStoreMock);
+const hotelRouterMock = require(`../src/hotels/hotel-router`);
 const OfferStoreMock = require(`./mock/offer-store-mock`);
 const getExpressInstanceMock = require(`../src/create-server`);
 
@@ -48,7 +47,7 @@ const WRONG_HOTEL = {
   "date": `aaa`
 };
 
-const app = getExpressInstanceMock(hotelRouterMock);
+const app = getExpressInstanceMock(hotelRouterMock(offerStoreMock, imageStoreMock));
 
 describe(`GET /api/offers`, () => {
 

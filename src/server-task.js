@@ -3,7 +3,7 @@
 const {SERVER_START_TASK: currentTask} = require(`../utils/task-constants`).Tasks;
 const offerStore = require(`../db/offer-store`);
 const imageStore = require(`../db/image-store`);
-const hotelRouter = require(`./hotels/hotel-router`)(offerStore, imageStore);
+const hotelRouter = require(`./hotels/hotel-router`);
 const BaseTask = require(`../utils/task-constructor`);
 const getExpressInstance = require(`./create-server`);
 
@@ -22,7 +22,7 @@ class ServerTask extends BaseTask {
 
     const validPort = ((typeof serverPort === `number`) && (serverPort >= 0) && (serverPort <= 65535)) ? serverPort : PORT;
 
-    const app = getExpressInstance(hotelRouter);
+    const app = getExpressInstance(hotelRouter(offerStore, imageStore));
 
     app.listen(validPort, () => console.log(`Сервер запущен: http://localhost:${validPort}`));
 
