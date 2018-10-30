@@ -3,10 +3,12 @@
 const colors = require(`colors/safe`);
 const fs = require(`fs`);
 const readline = require(`readline`);
-const generateElements = require(`../utils/generate-elements`);
-const WELCOME_MESSAGE = colors.green(require(`../utils/task-constants`).WELCOME_MESSAGE);
-const BaseTask = require(`../utils/task-constructor`);
-const {POSITIVE, NEGATIVE} = require(`../utils/task-constants`).Answers;
+const generateElements = require(`./utils/generate-elements`);
+const WELCOME_MESSAGE = colors.green(require(`./utils/task-constants`).WELCOME_MESSAGE);
+const BaseTask = require(`./utils/task-constructor`);
+const {POSITIVE, NEGATIVE} = require(`./utils/task-constants`).Answers;
+const logger = require(`./logger`);
+
 
 const currentTask = ``;
 const DESCRIPTION = `welcome`;
@@ -15,7 +17,7 @@ const writeData = (count, way, exit) => {
   const homes = JSON.stringify(generateElements(count));
   fs.writeFile(`${process.cwd()}/${way}/data.json`, homes, (err) => {
     if (err) {
-      console.error(err);
+      logger.error(err);
     }
 
     exit();
@@ -62,7 +64,7 @@ class WelcomeTask extends BaseTask {
             return;
           }
 
-          console.error(err1);
+          logger.error(err1);
         }
 
         writeData(count, way, closeDialog);
@@ -113,4 +115,4 @@ class WelcomeTask extends BaseTask {
   }
 }
 
-module.exports = {WelcomeTask, writeData};
+module.exports = {WelcomeTask};

@@ -1,6 +1,6 @@
 'use strict';
 
-const ValidationError = require(`../../utils/errors`).ValidationError;
+const ValidationError = require(`../utils/errors`).ValidationError;
 
 const {START_PRICE, END_PRICE, TYPES, MIN_ROOM, MAX_ROOM, CHECK, FEATURES} = require(`../generate-entity`);
 

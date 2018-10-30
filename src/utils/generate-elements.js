@@ -1,12 +1,15 @@
 'use strict';
 
-const {generateEntity} = require(`../src/generate-entity`);
+const logger = require(`../logger`);
+
+
+const {generateEntity} = require(`../generate-entity`);
 
 function generateElements(n) {
   let elements = [];
 
   if ((n < 1) && (typeof n !== `number`)) {
-    console.log(`неправильный формат данных`);
+    logger.info(`неправильный формат данных`);
   } else {
     for (let i = 1; i <= n; i++) {
       elements.push(generateEntity());

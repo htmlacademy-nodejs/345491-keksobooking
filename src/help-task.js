@@ -2,8 +2,8 @@
 
 const colors = require(`colors/safe`);
 
-const Tasks = require(`../utils/task-constants`).Tasks;
-const BaseTask = require(`../utils/task-constructor`);
+const Tasks = require(`./utils/task-constants`).Tasks;
+const BaseTask = require(`./utils/task-constructor`);
 const VersionTask = require(`./version-task`);
 const AuthorTask = require(`./author-task`);
 const LicenseTask = require(`./license-task`);

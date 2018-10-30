@@ -2,7 +2,9 @@
 
 const express = require(`express`);
 const MongoError = require(`mongodb`).MongoError;
-const ValidationError = require(`../utils/errors`).ValidationError;
+const ValidationError = require(`./utils/errors`).ValidationError;
+const logger = require(`./logger`);
+
 
 const handleNotFound = (req, res) => {
   res.status(404).send(`Page was not found`);
@@ -10,7 +12,7 @@ const handleNotFound = (req, res) => {
 
 const handleError = (err, req, res, _next) => {
   if (err) {
-    console.error(err);
+    logger.error(err);
     if (err instanceof ValidationError) {
       res.status(err.code).json(err.errors);
       return;
