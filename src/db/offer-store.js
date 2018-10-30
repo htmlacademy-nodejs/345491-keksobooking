@@ -1,7 +1,7 @@
 'use strict';
 
 const db = require(`./db`);
-const logger = require(`../src/logger`);
+const logger = require(`../logger`);
 
 
 const setupCollection = async () => {

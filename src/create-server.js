@@ -2,7 +2,7 @@
 
 const express = require(`express`);
 const MongoError = require(`mongodb`).MongoError;
-const ValidationError = require(`../utils/errors`).ValidationError;
+const ValidationError = require(`./utils/errors`).ValidationError;
 const logger = require(`./logger`);
 
 

@@ -1,7 +1,7 @@
 'use strict';
 
 const {MongoClient} = require(`mongodb`);
-const logger = require(`../src/logger`);
+const logger = require(`../logger`);
 
 const {
   DB_HOST = `localhost:27017`,

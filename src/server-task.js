@@ -1,10 +1,10 @@
 'use strict';
 
-const {SERVER_START_TASK: currentTask} = require(`../utils/task-constants`).Tasks;
-const offerStore = require(`../db/offer-store`);
-const imageStore = require(`../db/image-store`);
+const {SERVER_START_TASK: currentTask} = require(`./utils/task-constants`).Tasks;
+const offerStore = require(`./db/offer-store`);
+const imageStore = require(`./db/image-store`);
 const getHotelRouter = require(`./hotels/hotel-router`);
-const BaseTask = require(`../utils/task-constructor`);
+const BaseTask = require(`./utils/task-constructor`);
 const getExpressInstance = require(`./create-server`);
 const logger = require(`./logger`);
 

@@ -1,9 +1,9 @@
 'use strict';
 
-const logger = require(`../src/logger`);
+const logger = require(`../logger`);
 
 
-const {generateEntity} = require(`../src/generate-entity`);
+const {generateEntity} = require(`../generate-entity`);
 
 function generateElements(n) {
   let elements = [];

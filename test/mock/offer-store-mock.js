@@ -1,7 +1,7 @@
 'use strict';
 
 const Cursor = require(`./cursor-mock`);
-const generateElements = require(`../../utils/generate-elements`);
+const generateElements = require(`../../src/utils/generate-elements`);
 
 const HOTELS_COUNT = 20;
 

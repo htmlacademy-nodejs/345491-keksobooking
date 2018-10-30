@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require(`assert`);
-const createRandom = require(`../utils/create-random`);
+const createRandom = require(`../src/utils/create-random`);
 
 const {generateEntity, TITLES, START_PRICE, END_PRICE, TYPES, MIN_ROOM, MAX_ROOM, CHECK, FEATURES, PHOTOS, START_X, START_Y, END_X, END_Y, SEVEN_DAYS, MAX_GUESTS} = require(`../src/generate-entity.js`);
 

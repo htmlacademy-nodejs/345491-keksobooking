@@ -3,10 +3,10 @@
 const colors = require(`colors/safe`);
 const fs = require(`fs`);
 const readline = require(`readline`);
-const generateElements = require(`../utils/generate-elements`);
-const WELCOME_MESSAGE = colors.green(require(`../utils/task-constants`).WELCOME_MESSAGE);
-const BaseTask = require(`../utils/task-constructor`);
-const {POSITIVE, NEGATIVE} = require(`../utils/task-constants`).Answers;
+const generateElements = require(`./utils/generate-elements`);
+const WELCOME_MESSAGE = colors.green(require(`./utils/task-constants`).WELCOME_MESSAGE);
+const BaseTask = require(`./utils/task-constructor`);
+const {POSITIVE, NEGATIVE} = require(`./utils/task-constants`).Answers;
 const logger = require(`./logger`);
 
 

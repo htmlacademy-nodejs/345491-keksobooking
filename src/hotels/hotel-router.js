@@ -1,11 +1,11 @@
 'use strict';
 
 const express = require(`express`);
-const ArgumentError = require(`../../utils/errors`).ArgumentError;
+const ArgumentError = require(`../utils/errors`).ArgumentError;
 const multer = require(`multer`);
 const validateHotel = require(`./validator`);
 const toStream = require(`buffer-to-stream`);
-const ValidationError = require(`../../utils/errors`).ValidationError;
+const ValidationError = require(`../utils/errors`).ValidationError;
 const logger = require(`../logger`);
 
 const CODE_400 = 400;

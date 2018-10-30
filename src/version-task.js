@@ -3,8 +3,8 @@
 const colors = require(`colors/safe`);
 
 const packageInfo = require(`../package.json`);
-const {VERSION_TASK: currentTask} = require(`../utils/task-constants`).Tasks;
-const BaseTask = require(`../utils/task-constructor`);
+const {VERSION_TASK: currentTask} = require(`./utils/task-constants`).Tasks;
+const BaseTask = require(`./utils/task-constructor`);
 
 const DESCRIPTION = `program version`;
 const MESSAGE = packageInfo.version;

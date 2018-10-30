@@ -2,13 +2,13 @@
 
 require(`dotenv`).config();
 
-const WelcomeTask = require(`./src/welcome-task`).WelcomeTask;
-const VersionTask = require(`./src/version-task`);
-const HelpTask = require(`./src/help-task`);
-const AuthorTask = require(`./src/author-task`);
-const LicenseTask = require(`./src/license-task`);
-const DescriptionTask = require(`./src/description-task`);
-const ServerTask = require(`./src/server-task`).ServerTask;
+const WelcomeTask = require(`./welcome-task`).WelcomeTask;
+const VersionTask = require(`./version-task`);
+const HelpTask = require(`./help-task`);
+const AuthorTask = require(`./author-task`);
+const LicenseTask = require(`./license-task`);
+const DescriptionTask = require(`./description-task`);
+const ServerTask = require(`./server-task`).ServerTask;
 
 const command = process.argv[2];
 const port = parseInt(process.argv[3], 10);
