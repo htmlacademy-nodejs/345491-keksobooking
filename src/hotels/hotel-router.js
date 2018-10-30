@@ -6,6 +6,7 @@ const multer = require(`multer`);
 const validateHotel = require(`./validator`);
 const toStream = require(`buffer-to-stream`);
 const ValidationError = require(`../../utils/errors`).ValidationError;
+const logger = require(`../logger`);
 
 const CODE_400 = 400;
 const SKIP_COUNT = 0;
@@ -26,6 +27,14 @@ const doSkip = async (cursor, skip = SKIP_COUNT, limit = (LIMIT_COUNT + skip)) =
     total: await cursor.count()
   };
 };
+
+const ALLOW_CORS = (req, res, next) => {
+  res.header(`Access-Control-Allow-Origin`, `*`);
+  res.header(`Access-Control-Allow-Headers`, `Origin, X-Requested-With, Content-Type, Accept`);
+  next();
+};
+
+hotelRouter.use(ALLOW_CORS);
 
 hotelRouter.get(``, asyncMiddleware(async (req, res) => {
 
@@ -111,10 +120,10 @@ hotelRouter.get(`/:date/avatar`, asyncMiddleware(async (req, res) => {
 
   res.header(`Content-Type`, `image/jpg`);
   res.header(`Content-Length`, result.info.length);
-  res.on(`error`, (e) => console.error(e));
+  res.on(`error`, (e) => logger.error(e));
   res.on(`end`, () => res.end());
   const stream = result.stream;
-  stream.on(`error`, (e) => console.error(e));
+  stream.on(`error`, (e) => logger.error(e));
   stream.on(`end`, () => res.end());
   stream.pipe(res);
 }));

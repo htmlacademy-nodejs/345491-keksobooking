@@ -1,5 +1,7 @@
 'use strict';
 
+require(`dotenv`).config();
+
 const WelcomeTask = require(`./src/welcome-task`).WelcomeTask;
 const VersionTask = require(`./src/version-task`);
 const HelpTask = require(`./src/help-task`);
