@@ -17,7 +17,7 @@ const END_PRICE = 100000;
 const MIN_ROOM = 0;
 const MAX_ROOM = 1000;
 const ONE_HOTEL = generateEntity();
-const ALL_ERRORS = [`Field title is required and should be from 0 to 140 letters!`, `Field hotel is required and should be one of four types!`, `Field price is required and should be from ${START_PRICE} to ${END_PRICE} $!`, `Field address is required and should be less than 101 letters!`, `Field checkin is required!`, `Field checkout is required!`, `Field rooms is required and should be from ${MIN_ROOM} to ${MAX_ROOM}!`, `Field features should belong to initial values!`, `Field name should be text!`];
+const ALL_ERRORS = [`Field title is required and should be from 1 to 140!`, `Field hotel is required!`, `Field price is required and should be from ${START_PRICE} to ${END_PRICE}!`, `Field address is required and should be from 0 to 100!`, `Field checkin is required!`, `Field checkout is required!`, `Field rooms is required and should be from ${MIN_ROOM} to ${MAX_ROOM}!`, `Field features should belong to initial values!`, `Field name should be text!`];
 
 const WRONG_HOTEL = {
   "author": {
