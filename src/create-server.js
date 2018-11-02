@@ -2,7 +2,7 @@
 
 const express = require(`express`);
 const MongoError = require(`mongodb`).MongoError;
-const ValidationError = require(`./utils/errors`).ValidationError;
+const {ValidationError, ServerError} = require(`./utils/errors`);
 const logger = require(`./logger`);
 
 
@@ -20,7 +20,7 @@ const handleError = (err, req, res, _next) => {
       res.status(400).json(err.message);
       return;
     }
-    res.status(err.code || 500).send(err.message);
+    res.status(err.code || 500).send(new ServerError().errors);
   }
 };
 

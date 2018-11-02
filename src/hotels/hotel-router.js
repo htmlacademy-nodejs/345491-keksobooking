@@ -1,14 +1,12 @@
 'use strict';
 
 const express = require(`express`);
-const ArgumentError = require(`../utils/errors`).ArgumentError;
+const {ArgumentError, ValidationError} = require(`../utils/errors`);
 const multer = require(`multer`);
 const validateHotel = require(`./validator`);
 const toStream = require(`buffer-to-stream`);
-const ValidationError = require(`../utils/errors`).ValidationError;
 const logger = require(`../logger`);
 
-const CODE_400 = 400;
 const SKIP_COUNT = 0;
 const LIMIT_COUNT = 20;
 const MIME_IMAGE_JPG = `image/jpg`;
@@ -44,7 +42,7 @@ hotelRouter.get(``, asyncMiddleware(async (req, res) => {
   const limitCount = parseInt(req.query.limit, 10);
 
   if ((typeof limitCount !== `number`) || (typeof skipCount !== `number`)) {
-    throw new ArgumentError(`Неверный запрос.`, CODE_400);
+    throw new ArgumentError(`Неверный запрос.`);
   }
 
   res.send(await doSkip(await hotelRouter.offerStore.getAllHotels(), skipCount, limitCount));
@@ -78,14 +76,14 @@ hotelRouter.post(``, parser, hotelMedia, asyncMiddleware(async (req, res) => {
     if ((files[`avatar`][0])) {
       body.author.avatar = `${files[`avatar`][0].path}`;
       if ((files[`avatar`][0].mimetype !== MIME_IMAGE_JPG) || (files[`avatar`][0].mimetype !== MIME_IMAGE_PNG)) {
-        throw new ValidationError(`Validation error - invalid input format`, `invalid type of picture`, CODE_400);
+        throw new ValidationError(`Validation error - invalid input format`, `invalid type of picture`);
       }
     }
 
     if ((files[`preview`][0])) {
       body.offer.preview = `${files[`preview`][0].path}`;
       if ((files[`preview`][0].mimetype !== MIME_IMAGE_JPG) || (files[`preview`][0].mimetype !== MIME_IMAGE_PNG)) {
-        throw new ValidationError(`Validation error - invalid input format`, `invalid type of picture`, CODE_400);
+        throw new ValidationError(`Validation error - invalid input format`, `invalid type of picture`);
       }
     }
   }
