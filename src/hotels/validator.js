@@ -21,23 +21,23 @@ const Fields = {
 
 
 function validateHotel(hotel) {
-  const errors1 = [];
+  const errors = [];
 
   function checkInOut(check, name, arr) {
     if ((!check) || (typeof check !== STRING) || (arr.indexOf(check) === -1)) {
-      errors1.push(new ValidationError(`Validation error`, name, `Field ${name} is required!`).info);
+      errors.push(new ValidationError(`Validation error`, name, `Field ${name} is required!`).info);
     }
   }
 
   function checkMinMax(check, name, type, low = 0, high) {
     if ((!check) || (typeof check !== type) || (check.length < low) || (check.length > high)) {
-      errors1.push(new ValidationError(`Validation error`, name, `Field ${name} is required and should be from ${low} to ${high}!`).info);
+      errors.push(new ValidationError(`Validation error`, name, `Field ${name} is required and should be from ${low} to ${high}!`).info);
     }
   }
 
   if ((!hotel.offer) || (!hotel.author)) {
-    errors1.push(`Validation error - invalid input format`);
-    throw new ValidationError(`Validation error`, errors1);
+    errors.push(`Validation error - invalid input format`);
+    throw new ValidationError(`Validation error`, errors);
   }
 
   checkMinMax(hotel.offer.title, Fields.title, STRING, LOW_LIMIT, UP_LIMIT);
@@ -56,17 +56,17 @@ function validateHotel(hotel) {
 
 
   if ((!Array.isArray(hotel.offer.features)) || !(hotel.offer.features.every((it) => FEATURES.indexOf(it) !== -1)) || !(hotel.offer.features.every((it, ind, arr) => arr.indexOf(it) === ind))) {
-    errors1.push(new ValidationError(`Validation error`, `features`, `Field features should belong to initial values!`).info);
+    errors.push(new ValidationError(`Validation error`, `features`, `Field features should belong to initial values!`).info);
 
   }
 
   if (typeof hotel.author.name !== STRING) {
-    errors1.push(new ValidationError(`Validation error`, `name`, `Field name should be text!`).info);
+    errors.push(new ValidationError(`Validation error`, `name`, `Field name should be text!`).info);
   }
 
-  if (errors1.length > 0) {
+  if (errors.length > 0) {
 
-    throw new CommonValidationError(errors1);
+    throw new CommonValidationError(errors);
   }
 
   return hotel;

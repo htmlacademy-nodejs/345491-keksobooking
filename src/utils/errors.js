@@ -16,9 +16,8 @@ class CommonValidationError extends Error {
 
 }
 
-class ValidationError extends Error {
+class ValidationError {
   constructor(message, fieldName, errors) {
-    super();
     this.fieldName = fieldName;
     this.errors = errors;
     this.message = {
