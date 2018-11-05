@@ -7,13 +7,34 @@ class ArgumentError extends Error {
   }
 }
 
-class ValidationError extends Error {
-  constructor(message, fieldName, errors) {
-    super(`Validation error`);
+class CommonValidationError extends Error {
+  constructor(errors) {
+    super(errors);
     this.errors = errors;
     this.code = 400;
+    this.name = `Validation error`;
 
-    console.log(this.message);
+    console.log(this.errors);
+  }
+
+}
+
+class ValidationError extends Error {
+  constructor(message, fieldName, errors) {
+    super();
+    this.fieldName = fieldName;
+    this.errors = errors;
+    this.code = 400;
+    this.message = {
+      [`error`]: `Validation error`,
+      [`fieldName`]: this.fieldName,
+      [`errorMessage`]: this.errors
+    };
+
+  }
+
+  get info() {
+    return this.message;
   }
 }
 
@@ -25,4 +46,4 @@ class ServerError extends Error {
   }
 }
 
-module.exports = {ValidationError, ArgumentError, ServerError};
+module.exports = {ValidationError, ArgumentError, ServerError, CommonValidationError};

@@ -12,12 +12,35 @@ const getExpressInstanceMock = require(`../src/create-server`);
 
 const HOTELS_COUNT = 20;
 const RANDOM_DATE = 12345;
-const START_PRICE = 1;
-const END_PRICE = 100000;
-const MIN_ROOM = 0;
-const MAX_ROOM = 1000;
 const ONE_HOTEL = generateEntity();
-const ALL_ERRORS = [`Field title is required and should be from 1 to 140!`, `Field hotel is required!`, `Field price is required and should be from ${START_PRICE} to ${END_PRICE}!`, `Field address is required and should be from 0 to 100!`, `Field checkin is required!`, `Field checkout is required!`, `Field rooms is required and should be from ${MIN_ROOM} to ${MAX_ROOM}!`, `Field features should belong to initial values!`, `Field name should be text!`];
+const ALL_ERRORS = [{error: `Validation error`,
+  fieldName: `title`,
+  errorMessage: `Field title is required and should be from 1 to 140!`},
+{error: `Validation error`,
+  fieldName: `hotel`,
+  errorMessage: `Field hotel is required!`},
+{error: `Validation error`,
+  fieldName: `price`,
+  errorMessage: `Field price is required and should be from 1 to 100000!`},
+{error: `Validation error`,
+  fieldName: `address`,
+  errorMessage: `Field address is required and should be from 0 to 100!`},
+{error: `Validation error`,
+  fieldName: `checkin`,
+  errorMessage: `Field checkin is required!`},
+{error: `Validation error`,
+  fieldName: `checkout`,
+  errorMessage: `Field checkout is required!`},
+{error: `Validation error`,
+  fieldName: `rooms`,
+  errorMessage: `Field rooms is required and should be from 0 to 1000!`},
+{error: `Validation error`,
+  fieldName: `features`,
+  errorMessage: `Field features should belong to initial values!`},
+{error: `Validation error`,
+  fieldName: `name`,
+  errorMessage: `Field name should be text!`}
+];
 
 const WRONG_HOTEL = {
   "author": {
@@ -145,9 +168,11 @@ describe(`POST /api/offers`, () => {
     set(`Accept`, `application/json`).
     set(`Content-Type`, `application/json`).
     expect(400).
-    expect(`Content-Type`, /json/);
+    expect(`Content-Type`, /text\/html; charset=utf-8/);
 
     const errors = response.body;
+
+    console.log(`response: ${errors}`);
 
     assert.deepEqual(errors, ALL_ERRORS);
   });
