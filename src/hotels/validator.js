@@ -1,60 +1,72 @@
 'use strict';
 
-const ValidationError = require(`../utils/errors`).ValidationError;
+const {ValidationError, CommonValidationError} = require(`../utils/errors`);
 
 const {START_PRICE, END_PRICE, TYPES, MIN_ROOM, MAX_ROOM, CHECK, FEATURES} = require(`../generate-entity`);
 
 const ADRESS_LIMIT = 100;
-const CODE_400 = 400;
 const LOW_LIMIT = 1;
 const UP_LIMIT = 140;
+const STRING = `string`;
+const NUMBER = `number`;
+const Fields = {
+  title: `title`,
+  hotel: `hotel`,
+  price: `price`,
+  address: `address`,
+  checkin: `checkin`,
+  checkout: `checkout`,
+  rooms: `rooms`
+};
+
 
 function validateHotel(hotel) {
   const errors = [];
 
+  function checkInOut(check, name, arr) {
+    if ((!check) || (typeof check !== STRING) || (arr.indexOf(check) === -1)) {
+      errors.push(new ValidationError(`Validation error`, name, `Field ${name} is required!`).info);
+    }
+  }
+
+  function checkMinMax(check, name, type, low = 0, high) {
+    if ((!check) || (typeof check !== type) || (check.length < low) || (check.length > high)) {
+      errors.push(new ValidationError(`Validation error`, name, `Field ${name} is required and should be from ${low} to ${high}!`).info);
+    }
+  }
+
   if ((!hotel.offer) || (!hotel.author)) {
     errors.push(`Validation error - invalid input format`);
-    throw new ValidationError(`Validation error`, errors, CODE_400);
+    throw new ValidationError(`Validation error`, errors);
   }
 
-  if ((!hotel.offer.title) || (typeof hotel.offer.title !== `string`) || (hotel.offer.title.length < LOW_LIMIT) || (hotel.offer.title.length > UP_LIMIT)) {
-    errors.push(`Field title is required and should be from 0 to 140 letters!`);
-  }
+  checkMinMax(hotel.offer.title, Fields.title, STRING, LOW_LIMIT, UP_LIMIT);
 
-  if ((!hotel.offer.type) || (TYPES.indexOf(hotel.offer.type) === -1)) {
-    errors.push(`Field hotel is required and should be one of four types!`);
-  }
+  checkInOut(hotel.offer.type, Fields.hotel, TYPES);
 
-  if ((!hotel.offer.price) || (typeof hotel.offer.price !== `number`) || (hotel.offer.price < START_PRICE) || (hotel.offer.price > END_PRICE)) {
-    errors.push(`Field price is required and should be from ${START_PRICE} to ${END_PRICE} $!`);
-  }
+  checkMinMax(hotel.offer.price, Fields.price, NUMBER, START_PRICE, END_PRICE);
 
-  if ((!hotel.offer.address) || (hotel.offer.address.length > ADRESS_LIMIT) || (typeof hotel.offer.address !== `string`)) {
-    errors.push(`Field address is required and should be less than 101 letters!`);
-  }
+  checkMinMax(hotel.offer.address, Fields.address, STRING, 0, ADRESS_LIMIT);
 
-  if ((!hotel.offer.checkin) || (typeof hotel.offer.checkin !== `string`) || (CHECK.indexOf(hotel.offer.checkin) === -1)) {
-    errors.push(`Field checkin is required!`);
-  }
+  checkInOut(hotel.offer.checkin, Fields.checkin, CHECK);
 
-  if ((!hotel.offer.checkout) || (typeof hotel.offer.checkout !== `string`) || (CHECK.indexOf(hotel.offer.checkout) === -1)) {
-    errors.push(`Field checkout is required!`);
-  }
+  checkInOut(hotel.offer.checkout, Fields.checkout, CHECK);
 
-  if ((!hotel.offer.rooms) || (typeof hotel.offer.rooms !== `number`) || (hotel.offer.rooms < MIN_ROOM) || (hotel.offer.rooms > MAX_ROOM)) {
-    errors.push(`Field rooms is required and should be from ${MIN_ROOM} to ${MAX_ROOM}!`);
-  }
+  checkMinMax(hotel.offer.rooms, Fields.rooms, NUMBER, MIN_ROOM, MAX_ROOM);
+
 
   if ((!Array.isArray(hotel.offer.features)) || !(hotel.offer.features.every((it) => FEATURES.indexOf(it) !== -1)) || !(hotel.offer.features.every((it, ind, arr) => arr.indexOf(it) === ind))) {
-    errors.push(`Field features should belong to initial values!`);
+    errors.push(new ValidationError(`Validation error`, `features`, `Field features should belong to initial values!`).info);
+
   }
 
-  if (typeof hotel.author.name !== `string`) {
-    errors.push(`Field name should be text!`);
+  if (typeof hotel.author.name !== STRING) {
+    errors.push(new ValidationError(`Validation error`, `name`, `Field name should be text!`).info);
   }
 
   if (errors.length > 0) {
-    throw new ValidationError(`Validation error`, errors, CODE_400);
+
+    throw new CommonValidationError(errors);
   }
 
   return hotel;
