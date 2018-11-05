@@ -65,7 +65,6 @@ function validateHotel(hotel) {
   }
 
   if (errors1.length > 0) {
-    console.log(errors1);
 
     throw new CommonValidationError(errors1);
   }

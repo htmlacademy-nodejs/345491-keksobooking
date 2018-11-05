@@ -168,12 +168,9 @@ describe(`POST /api/offers`, () => {
     set(`Accept`, `application/json`).
     set(`Content-Type`, `application/json`).
     expect(400).
-    expect(`Content-Type`, /text\/html; charset=utf-8/);
+    expect(`Content-Type`, /json/);
 
     const errors = response.body;
-
-    console.log(`response: ${errors}`);
-
     assert.deepEqual(errors, ALL_ERRORS);
   });
 

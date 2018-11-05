@@ -2,7 +2,7 @@
 
 const express = require(`express`);
 const MongoError = require(`mongodb`).MongoError;
-const {ValidationError, ServerError} = require(`./utils/errors`);
+const {CommonValidationError, ServerError} = require(`./utils/errors`);
 const logger = require(`./logger`);
 
 
@@ -13,7 +13,7 @@ const handleNotFound = (req, res) => {
 const handleError = (err, req, res, _next) => {
   if (err) {
     logger.error(err);
-    if (err instanceof ValidationError) {
+    if (err instanceof CommonValidationError) {
       res.status(err.code).json(err.errors);
       return;
     } else if (err instanceof MongoError) {

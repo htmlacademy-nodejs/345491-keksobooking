@@ -9,12 +9,9 @@ class ArgumentError extends Error {
 
 class CommonValidationError extends Error {
   constructor(errors) {
-    super(errors);
+    super(`Validation error`);
     this.errors = errors;
     this.code = 400;
-    this.name = `Validation error`;
-
-    console.log(this.errors);
   }
 
 }
@@ -24,7 +21,6 @@ class ValidationError extends Error {
     super();
     this.fieldName = fieldName;
     this.errors = errors;
-    this.code = 400;
     this.message = {
       [`error`]: `Validation error`,
       [`fieldName`]: this.fieldName,
